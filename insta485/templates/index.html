@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="/static/css/index.css">
+  <title>insta485</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+  <body style="background-color:rgb(245, 243, 248);">
+    <!--Top of the page hyperlinks-->
+
+    <nav class="navbar navbar-light" style="background-color: rgb(245, 243, 248)">
+      <div class="topnav-left">
+        <a href="/"><img src="/uploads/instaLogo.png" height="60" width="60" alt="Picture of a simplified camera (Instagram logo)"></a>
+        <span class="topnav-Company">Insta485</span>
+      </div>
+      <div class="topnav-right">
+        <span class="button">
+          <a href="/explore/">explore</a>
+        </span>
+        <span class="button">
+          <a href="/users/{{ logname }}/">{{ logname }}</a>
+        </span>
+      </div>
+    </nav>
+
+    <hr class="new" style="width: 95%;">
+
+    <!--Instagram feed-->
+      {% for currentPost in posts %}
+
+        <!--Post 1-->
+        <div class="card boarder-dark mb-3 mx-auto" style="width: 600px;" >
+          <!--Header-->
+          <div class="card-header">
+            <span class="card-header-left">
+              <a href="/users/{{ currentPost.owner }}/"> <!--Take a look at this uhhhh-->
+                <img src="/uploads/{{ currentPost.profile_pic }}" height="30" width="30" alt="Picture of Current Poster"> <b class="user"> {{ currentPost.owner }} </b>
+              </a>
+            </span>
+            <span class="card-header-right">
+              <a href="/posts/{{ currentPost.postid }}/"> <!--Here too uhhhh-->
+                {{ currentPost.timestamp }}
+              </a>
+            </span>
+          </div>
+
+          <!--Post Content--> <!--Here as well uhhhh-->
+          <img class="card-img-top" src="/uploads/{{ currentPost.filename }}" alt="Picture of chickens in a coop with chicks">
+
+          <!--Post Feedback-->
+          <div>
+            <div class="user">
+              {{ currentPost.like }}
+              {% if currentPost.like == 1%}
+                <span>like</span> 
+              {% else %}
+                <span>likes</span>
+              {% endif %}
+            </div> <!--Displays the number of likes with proper English-->
+
+            <div class="comment">
+              {% for comment in currentPost.comments %}
+                <div><b><a href="/users/{{ comment.username }}/">{{ comment.username }}</a></b><span> {{ comment.text }}</span></div>
+              {% endfor %}
+              </div> <!--Displays all comments in chronological order-->
+
+              <!--Like buttons depending on whether the owner liked the post-->
+              {% if currentPost.is_liked == False %}
+                <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+                <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="operation" value="like"/>
+                  <input type="hidden" name="postid" value="{{ currentPost.postid }}"/>
+                  <input type="submit" name="like" value="like"/>
+                </form>
+              {% endif %}
+              {% if currentPost.is_liked == True %}
+                <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+                <form action="/likes/?target=/" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="operation" value="unlike"/>
+                  <input type="hidden" name="postid" value="{{ currentPost.postid }}"/>
+                  <input type="submit" name="unlike" value="unlike"/>
+                </form>
+              {% endif %}
+              <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+              <form action="/comments/?target=/" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="create"/>
+                <input type="hidden" name="postid" value="{{ currentPost.postid }}"/>
+                <input type="text" name="text" required/>
+                <input type="submit" name="comment" value="comment"/>
+              </form>
+          </div> <!--Post feedback section (likes, comments)-->
+        </div>
+
+        <p></p> 
+        {% endfor %}
+  </body>
+</html>
