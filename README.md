@@ -1,1 +1,1 @@
-[Progress Log](https://docs.google.com/document/d/1CnSFMHeVYxBpFbZpEVLsvV7PJ5vPVnK3hWsdLugBXuA/edit#heading=h.dt4dxjy3c82f)
+[Progress Log](TODO)
