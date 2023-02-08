@@ -3,6 +3,29 @@ import flask
 import insta485
 
 
+@insta485.app.route("/api/v1/", methods=['GET'])
+def get_services():
+  " return a list of services available"
+   
+  context = {
+    "comments": "/api/v1/comments/",
+    "likes": "/api/v1/likes/",
+    "posts": "/api/v1/posts/",
+    "url": "/api/v1/"
+  }
+  return flask.jsonify(context)
+
+
+
+@insta485.app.route("/api/v1/posts/", methods=['GET'])
+def get_post_list():
+  """ return 10 newest posts """
+  ...
+   
+
+
+
+
 @insta485.app.route("/api/v1/posts/<int:postid_url_slug>/")
 def get_post(postid_url_slug):
     """Return post on postid.
