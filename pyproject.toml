@@ -14,7 +14,6 @@ dependencies = [
     "pydocstyle",
     "pylint",
     "pytest",
-    "pytest-mock",
     "requests",
 ]
 requires-python = ">=3.8"
