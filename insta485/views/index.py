@@ -15,15 +15,9 @@ from flask import (abort, redirect, request, send_from_directory, session,
                    url_for)
 
 import insta485
+from insta485.api.utils import *
 
 
-def is_user_exists(username):
-    """If user exists in database."""
-    connection = insta485.model.get_db()
-    res = connection.execute(
-        "SELECT username FROM users WHERE username == ?", [username]
-    )
-    return res.fetchone() is not None
 
 
 def is_following(username1, username2):
@@ -43,51 +37,6 @@ def get_fullname(username):
         "SELECT fullname FROM users WHERE username = ?", [username]
     )
     return res.fetchone()["fullname"]
-
-
-def get_file_path(filename):
-    """Get file path of file."""
-    return "/uploads/" + filename
-
-
-def save_current_file():
-    """Save file to uploads folder."""
-    # Unpack flask object
-    fileobj = flask.request.files["file"]
-    filename = fileobj.filename
-    # Compute base name (filename without directory).  We use a UUID to avoid
-    # clashes with existing files, and ensure that the name is compatible
-    # with the filesystem. For best practive, we ensure uniform file
-    # extensions (e.g. lowercase).
-    stem = uuid.uuid4().hex
-    suffix = pathlib.Path(filename).suffix.lower()
-    uuid_basename = f"{stem}{suffix}"
-    # Save to disk
-    path = insta485.app.config["UPLOAD_FOLDER"] / uuid_basename
-    fileobj.save(path)
-    # print(f"====== {uuid_basename} =====")
-    # print(f"====== {path} =====")
-    return uuid_basename
-
-
-def hash_password(password, salt=None):
-    """Hash password."""
-    algorithm = "sha512"
-    if salt is None:
-        salt = uuid.uuid4().hex
-    hash_obj = hashlib.new(algorithm)
-    password_salted = salt + password
-    hash_obj.update(password_salted.encode("utf-8"))
-    password_hash = hash_obj.hexdigest()
-    password_db_string = "$".join([algorithm, salt, password_hash])
-    return password_db_string
-
-
-def check_password(password, password_db_string):
-    """Check if password is correct, adds salt."""
-    salt = password_db_string.split("$")[1]
-    password_db_string_new = hash_password(password, salt)
-    return password_db_string == password_db_string_new
 
 
 @insta485.app.route("/")
