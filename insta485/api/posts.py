@@ -31,13 +31,15 @@ def get_post_list():
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("post", default=0, type=int)
-    postid_lte = flask.request.args.get("postid_lte", default=0, type=int)
+    largest_post_id = connection.execute("SELECT MAX(postid) FROM posts").fetchone()[0]
+    postid_lte = flask.request.args.get("postid_lte", default=largest_post_id, type=int)
     cur = connection.cursor()
     cur = connection.execute(
-        " select postid from posts where owner=? or owner in "
-        "(select username2 from following where username1=?) "
-        "order by postid desc limit ? offset ?",
-        (logname, logname, size + 1, size * page),
+        "SELECT postid FROM posts WHERE (postid <= ? AND owner=?) "
+        "OR (postid <= ? AND owner IN "
+        "(select username2 from following where username1=?)) "
+        "order by postid desc limit ? offset ? ",
+        (postid_lte, logname, postid_lte, logname, size + 1, size * page),
     )
     tmp = cur.fetchall()
     for t in tmp:
