@@ -27,7 +27,6 @@ def get_post_list():
 
     results = []
     connection = insta485.model.get_db()
-    logname = flask.session["username"]
     context = {"url": "/api/v1/p/"}
 
     size = flask.request.args.get("size", default=10, type=int)
