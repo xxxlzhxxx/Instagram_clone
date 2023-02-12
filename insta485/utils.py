@@ -88,7 +88,7 @@ def authenicate():
             if check_password(password, gt_password_db_string):
                 # if password is correct
                 return {
-                    "message": f"Auth: {flask.session['username']}",
+                    "message": f"Auth: {username}",
                 }, username
             else:
                 return {
