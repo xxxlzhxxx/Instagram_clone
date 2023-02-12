@@ -15,7 +15,7 @@ from flask import (abort, redirect, request, send_from_directory, session,
                    url_for)
 
 import insta485
-from insta485.api.utils import *
+from insta485.utils import *
 
 
 

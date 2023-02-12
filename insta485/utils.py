@@ -69,17 +69,13 @@ def authenicate():
     auth = request.authorization
     if not auth:
         if "username" not in flask.session:
-            return {"message": "Forbidden: auth needed", "status_code": 403}, None
+            return {"message": "Forbidden: auth needed"}, None
 
         if not is_user_exists(flask.session["username"]):
-            return {
-                "message": "Forbidden: user name does not exist",
-                "status_code": 403,
-            }, None
-        return {
-            "message": f"Auth: {flask.session['username']}",
-            "status_code": 200,
-        }, flask.session["username"]
+            return {"message": "Forbidden: user name does not exist"}, None
+        return {"message": f"Auth: {flask.session['username']}"}, flask.session[
+            "username"
+        ]
     else:
         username, password = auth.username, auth.password
         connection = insta485.model.get_db()
@@ -93,15 +89,12 @@ def authenicate():
                 # if password is correct
                 return {
                     "message": f"Auth: {flask.session['username']}",
-                    "status_code": 200,
                 }, username
             else:
                 return {
                     "message": "Forbidden: password is incorrect",
-                    "status_code": 403,
                 }, None
         else:
             return {
                 "message": "Forbidden: user name does not exist",
-                "status_code": 403,
             }, None
