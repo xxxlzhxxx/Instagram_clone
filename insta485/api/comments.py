@@ -1,12 +1,16 @@
 """API for comments."""
+import flask
 from flask import abort, request, session, jsonify
 import insta485
+from insta485 import utils
 
 @insta485.app.route('/api/v1/comments/', methods=['POST'])
 def post_comment():
     """Add a comment to a post."""
+    message, logname = utils.authenicate()
+    if not logname:
+        return flask.jsonify(message), 403
     connection = insta485.model.get_db()
-    logname = session['username']
 
     postid = request.args.get('postid')
     text = request.json['text']
@@ -36,8 +40,10 @@ def post_comment():
 @insta485.app.route('/api/v1/comments/<commentid>/', methods=['DELETE'])
 def delete_comment(commentid):
     """Delete a comment."""
+    message, logname = utils.authenicate()
+    if not logname:
+        return flask.jsonify(message), 403
     connection = insta485.model.get_db()
-    logname = session['username']
 
     cursor = connection.execute(
         "SELECT owner "

@@ -1,6 +1,7 @@
 """REST API for posts."""
 import flask
 import insta485
+from insta485 import utils
 
 
 @insta485.app.route("/api/v1/", methods=["GET"])
@@ -20,13 +21,13 @@ def get_services():
 def get_post_list():
     """return 10 newest posts"""
 
-    if "username" not in flask.session:
-        context = {"message": "Forbidden", "status_code": 403}
-        return flask.jsonify(context), 403
+    message, logname = utils.authenicate()
+    if not logname:
+        return flask.jsonify(message), 403
 
     results = []
     connection = insta485.model.get_db()
-    usrname = flask.session["username"]
+    logname = flask.session["username"]
     context = {"url": "/api/v1/p/"}
 
     size = flask.request.args.get("size", default=10, type=int)
@@ -37,7 +38,7 @@ def get_post_list():
         " select postid from posts where owner=? or owner in "
         "(select username2 from following where username1=?) "
         "order by postid desc limit ? offset ?",
-        (usrname, usrname, size + 1, size * page),
+        (logname, logname, size + 1, size * page),
     )
     tmp = cur.fetchall()
     for t in tmp:
@@ -69,10 +70,9 @@ def get_post(postid_url_slug):
       "url": "/api/v1/posts/1/"
     }
     """
-
-    if "username" not in flask.session:
-        context = {"message": "Forbidden", "status_code": 403}
-        return flask.jsonify(context), 403
+    message, logname = utils.authenicate()
+    if not logname:
+        return flask.jsonify(message), 403
 
     postid = postid_url_slug
     connection = insta485.model.get_db()
@@ -86,7 +86,6 @@ def get_post(postid_url_slug):
     post_info = cur.fetchall()[0]
     cur = connection.execute(" select * from likes " " where postid = ? ", (postid,))
     likes = cur.fetchall()
-    logname = flask.session["username"]
     comments = []
     for cmt in cmts:
         temp = {

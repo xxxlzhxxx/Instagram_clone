@@ -8,8 +8,8 @@ from insta485 import utils
 @insta485.app.route("/api/v1/likes/", methods=["POST"])
 def add_like():
     """create a new like with the specific postid"""
-    message, username = utils.authenicate()
-    if not username:
+    message, logname = utils.authenicate()
+    if not logname:
         return flask.jsonify(message), 403
 
     postid = flask.request.args.get("postid", type=int)
@@ -21,7 +21,7 @@ def add_like():
 
     # check if the user has already liked the post
     cursor = connection.execute(
-        "SELECT likeid FROM likes WHERE owner = ? AND postid = ?", (username, postid)
+        "SELECT likeid FROM likes WHERE owner = ? AND postid = ?", (logname, postid)
     )
     if cursor.fetchone():
         # already liked the post, return the likeid
@@ -30,11 +30,11 @@ def add_like():
     else:
         # create a new like
         connection.execute(
-            "INSERT INTO likes(owner, postid) " + "VALUES (?, ?)", (username, postid)
+            "INSERT INTO likes(owner, postid) " + "VALUES (?, ?)", (logname, postid)
         )
         likeid = connection.execute(
             "SELECT likeid FROM likes WHERE owner = ? AND postid = ?",
-            (username, postid),
+            (logname, postid),
         ).fetchone()["likeid"]
         return flask.jsonify({"likeid": likeid, "url": f"/api/v1/likes/{likeid}/"}), 201
 
