@@ -79,7 +79,6 @@ def get_post(postid_url_slug):
     connection = insta485.model.get_db()
     context = {}
     context["url"] = "/api/v1/posts/%d/" % postid
-    context["post_show_url"] = "/posts/%d/" % postid
 
     cur = connection.execute(" select * from comments " " where postid = ? ", (postid,))
     cmts = cur.fetchall()
@@ -118,5 +117,8 @@ def get_post(postid_url_slug):
     context["imgUrl"] = "/uploads/%s" % post_info["filename"]
     context["likes"] = lk
     context["url"] = "/api/v1/posts/%d/" % post_info["postid"]
+    context["ownerShowUrl"] = "/users/%s/" % post_info["owner"] 
+    context["postid"] = postid
+    print(context['ownerImgUrl'])
 
     return flask.jsonify(**context)
