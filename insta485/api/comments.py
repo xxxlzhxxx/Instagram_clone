@@ -58,7 +58,7 @@ def delete_comment(commentid):
         abort(403)
 
     cursor = connection.execute(
-        "SELECT owner "
+        "DELETE "
         "FROM comments "
         "WHERE commentid = ?",
         (commentid,)
