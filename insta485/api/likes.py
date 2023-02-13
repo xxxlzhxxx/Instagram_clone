@@ -23,9 +23,10 @@ def add_like():
     cursor = connection.execute(
         "SELECT likeid FROM likes WHERE owner = ? AND postid = ?", (logname, postid)
     )
-    if cursor.fetchone():
+    ret = cursor.fetchone()
+    if ret:
         # already liked the post, return the likeid
-        likeid = cursor.fetchone()["likeid"]
+        likeid = ret["likeid"]
         return flask.jsonify({"likeid": likeid, "url": f"/api/v1/likes/{likeid}/"}), 200
     else:
         # create a new like
@@ -43,9 +44,11 @@ def add_like():
 def delete_like(likeid):
     """Delete the like with the specific likeid"""
 
-    connection = insta485.model.get_db()
-    logname = session["username"]
+    message, logname = utils.authenicate()
+    if not logname:
+        return flask.jsonify(message), 403
 
+    connection = insta485.model.get_db()
     cursor = connection.execute(
         "SELECT owner " "FROM likes " "WHERE likeid = ?", (likeid,)
     )
@@ -57,6 +60,6 @@ def delete_like(likeid):
     elif owner["owner"] != logname:
         abort(403)
 
-    connection.excute("DELETE " "FROM likes " "WHERE likeid = ?", (likeid,))
+    connection.execute("DELETE " "FROM likes " "WHERE likeid = ?", (likeid,))
 
     return "", 204
