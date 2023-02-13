@@ -85,7 +85,10 @@ def get_post(postid_url_slug):
     cur = connection.execute(" select * from comments " " where postid = ? ", (postid,))
     cmts = cur.fetchall()
     cur = connection.execute(" select * from posts " " where postid = ? ", (postid,))
-    post_info = cur.fetchall()[0]
+    post_info = cur.fetchall()
+    if len(post_info) == 0:
+        return flask.jsonify({"message": "Post not found"}), 404
+    post_info = post_info[0]
     cur = connection.execute(" select * from likes " " where postid = ? ", (postid,))
     likes = cur.fetchall()
     comments = []
