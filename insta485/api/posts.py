@@ -49,7 +49,7 @@ def get_post_list():
     context["results"] = results
     if len(results) > size:
         context["results"] = results[:size]
-        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte" % (size, page + 1) %postid_lte
+        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1,postid_lte) 
     else:
         context["results"] = results
         context["next"] = ""
