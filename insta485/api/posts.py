@@ -27,7 +27,7 @@ def get_post_list():
 
     results = []
     connection = insta485.model.get_db()
-    context = {"url": "/api/v1/posts/"}
+    context = {"url": flask.request.full_path}
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("post", default=0, type=int)
@@ -40,16 +40,17 @@ def get_post_list():
         "OR (postid <= ? AND owner IN "
         "(select username2 from following where username1=?)) "
         "order by postid desc limit ? offset ? ",
-        (postid_lte, logname, postid_lte, logname, size + 1, size * page),
+        (postid_lte, logname, postid_lte, logname, size, size * page),
     )
     tmp = cur.fetchall()
+    context['results'] = []
     for t in tmp:
         record = {"postid": t["postid"], "url": "/api/v1/posts/%d/" % t["postid"]}
         results.append(record)
     context["results"] = results
     if len(results) > size:
         context["results"] = results[:size]
-        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte" % (size, page + 1) %postid_lte
+        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
     else:
         context["results"] = results
         context["next"] = ""
