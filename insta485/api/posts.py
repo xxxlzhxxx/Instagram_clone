@@ -49,7 +49,7 @@ def get_post_list():
     context["results"] = results
     if len(results) > size:
         context["results"] = results[:size]
-        context["next"] = "/api/v1/posts/?size=%d&page=%d" % (size, page + 1)
+        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte" % (size, page + 1) %postid_lte
     else:
         context["results"] = results
         context["next"] = ""
@@ -78,8 +78,8 @@ def get_post(postid_url_slug):
     postid = postid_url_slug
     connection = insta485.model.get_db()
     context = {}
-    context["url"] = "/api/v1/p/%d/" % postid
-    context["post_show_url"] = "/p/%d/" % postid
+    context["url"] = "/api/v1/posts/%d/" % postid
+    context["post_show_url"] = "/posts/%d/" % postid
 
     cur = connection.execute(" select * from comments " " where postid = ? ", (postid,))
     cmts = cur.fetchall()
