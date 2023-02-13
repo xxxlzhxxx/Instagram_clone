@@ -46,7 +46,7 @@ def get_post_list():
         "OR (postid <= ? AND owner IN "
         "(select username2 from following where username1=?)) "
         "order by postid desc limit ? offset ? ",
-        (postid_lte, logname, postid_lte, logname, size + 1, size * page),
+        (postid_lte, logname, postid_lte, logname, size, size * page),
     )
     tmp = cur.fetchall()
     for t in tmp:
