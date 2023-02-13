@@ -120,6 +120,5 @@ def get_post(postid_url_slug):
     context["url"] = "/api/v1/posts/%d/" % post_info["postid"]
     context["ownerShowUrl"] = "/users/%s/" % post_info["owner"] 
     context["postid"] = postid
-    print(context['ownerImgUrl'])
 
     return flask.jsonify(**context)
