@@ -59,7 +59,7 @@ def get_post_list():
         "order by postid desc",
         (postid_lte, logname, postid_lte, logname)).fetchall()
 
-    if len(all_posts) > size * (page + 1):
+    if len(all_posts) >= size * (page + 1):
         context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
     else:
         context["next"] = ""
