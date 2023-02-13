@@ -34,6 +34,9 @@ def get_post_list():
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("page", default=0, type=int)
+    if size < 0 or page < 0:
+        return flask.jsonify({"message": "Invalid size or page"}), 400
+
     largest_post_id = connection.execute("SELECT MAX(postid) as m FROM posts").fetchone()['m']
 
     postid_lte = flask.request.args.get("postid_lte", default=largest_post_id, type=int)
@@ -85,7 +88,10 @@ def get_post(postid_url_slug):
     cur = connection.execute(" select * from comments " " where postid = ? ", (postid,))
     cmts = cur.fetchall()
     cur = connection.execute(" select * from posts " " where postid = ? ", (postid,))
-    post_info = cur.fetchall()[0]
+    post_info = cur.fetchall()
+    if len(post_info) == 0:
+        return flask.jsonify({"message": "Post not found"}), 404
+    post_info = post_info[0]
     cur = connection.execute(" select * from likes " " where postid = ? ", (postid,))
     likes = cur.fetchall()
     comments = []
