@@ -33,7 +33,7 @@ def get_post_list():
         context = {"url": "/api/v1/posts/"}
 
     size = flask.request.args.get("size", default=10, type=int)
-    page = flask.request.args.get("post", default=0, type=int)
+    page = flask.request.args.get("page", default=0, type=int)
     largest_post_id = connection.execute("SELECT MAX(postid) as m FROM posts").fetchone()['m']
 
     postid_lte = flask.request.args.get("postid_lte", default=largest_post_id, type=int)
@@ -41,14 +41,14 @@ def get_post_list():
     cur = connection.execute(
         "SELECT postid FROM posts WHERE (postid <= ? AND owner=?) "
         "OR (postid <= ? AND owner IN "
-        "(select username2 from following where username1=?)) "
-        "order by postid desc limit ? offset ? ",
+        "(SELECT username2 FROM following WHERE username1=?)) "
+        "ORDER BY postid DESC LIMIT ? OFFSET ? ",
         (postid_lte, logname, postid_lte, logname, size, size * page),
     )
-    tmp = cur.fetchall()
+    posts = cur.fetchall()
     context['results'] = []
-    for t in tmp:
-        record = {"postid": t["postid"], "url": "/api/v1/posts/%d/" % t["postid"]}
+    for post in posts:
+        record = {"postid": post["postid"], "url": "/api/v1/posts/%d/" % post["postid"]}
         results.append(record)
         
     context["results"] = results
