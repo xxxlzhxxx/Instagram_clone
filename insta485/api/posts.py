@@ -47,12 +47,8 @@ def get_post_list():
         record = {"postid": t["postid"], "url": "/api/v1/posts/%d/" % t["postid"]}
         results.append(record)
     context["results"] = results
-    if len(results) > size:
-        context["results"] = results[:size]
-        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
-    else:
-        context["results"] = results
-        context["next"] = ""
+    context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
+  
 
     return flask.jsonify(**context)
 
@@ -115,6 +111,7 @@ def get_post(postid_url_slug):
     )
     context["ownerImgUrl"] = "/uploads/%s" % cur.fetchall()[0]["filename"]
     context["postShowUrl"] = "/posts/%d/" % post_info["postid"]
+    context["ownerShowUrl"] = "/users/%s/" %logname
     context["imgUrl"] = "/uploads/%s" % post_info["filename"]
     context["likes"] = lk
     context["url"] = "/api/v1/posts/%d/" % post_info["postid"]
