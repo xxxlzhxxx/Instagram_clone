@@ -27,7 +27,10 @@ def get_post_list():
 
     results = []
     connection = insta485.model.get_db()
-    context = {"url": flask.request.full_path}
+    if ("size" in flask.request.args) or ("page" in flask.request.args):
+        context = {"url": flask.request.full_path}
+    else:
+        context = {"url": "/api/v1/posts/"}
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("post", default=0, type=int)
