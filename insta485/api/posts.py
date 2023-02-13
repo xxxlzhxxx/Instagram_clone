@@ -27,7 +27,10 @@ def get_post_list():
 
     results = []
     connection = insta485.model.get_db()
-    context = {"url": flask.request.full_path}
+    if ("size" in flask.request.args) or ("page" in flask.request.args):
+        context = {"url": flask.request.full_path}
+    else:
+        context = {"url": "/api/v1/posts/"}
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("post", default=0, type=int)
@@ -49,9 +52,18 @@ def get_post_list():
         results.append(record)
         
     context["results"] = results
-    context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
-  
 
+    all_posts = connection.execute(
+        "SELECT postid FROM posts WHERE (postid <= ? AND owner=?) "
+        "OR (postid <= ? AND owner IN "
+        "(select username2 from following where username1=?)) "
+        "order by postid desc",
+        (postid_lte, logname, postid_lte, logname)).fetchall()
+
+    if len(all_posts) > size * (page + 1):
+        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
+    else:
+        context["next"] = ""
     return flask.jsonify(**context)
 
 
@@ -118,6 +130,5 @@ def get_post(postid_url_slug):
     context["url"] = "/api/v1/posts/%d/" % post_info["postid"]
     context["ownerShowUrl"] = "/users/%s/" % post_info["owner"] 
     context["postid"] = postid
-    print(context['ownerImgUrl'])
 
     return flask.jsonify(**context)
