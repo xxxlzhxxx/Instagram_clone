@@ -52,17 +52,10 @@ def get_post_list():
         results.append(record)
     context["results"] = results
 
-    all_posts = connection.execute(
-        "SELECT postid FROM posts WHERE (postid <= ? AND owner=?) "
-        "OR (postid <= ? AND owner IN "
-        "(select username2 from following where username1=?)) "
-        "order by postid desc",
-        (postid_lte, logname, postid_lte, logname)).fetchall()
-
-    if len(all_posts) >= size * (page + 1):
-        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
-    else:
+    if len(results) < size:
         context["next"] = ""
+    else:
+        context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
     return flask.jsonify(**context)
 
 
