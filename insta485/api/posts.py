@@ -27,7 +27,7 @@ def get_post_list():
 
     results = []
     connection = insta485.model.get_db()
-    context = {"url": "/api/v1/p/"}
+    context = {"url": "/api/v1/posts/"}
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("post", default=0, type=int)
@@ -44,12 +44,12 @@ def get_post_list():
     )
     tmp = cur.fetchall()
     for t in tmp:
-        record = {"postid": t["postid"], "url": "/api/v1/p/%d/" % t["postid"]}
+        record = {"postid": t["postid"], "url": "/api/v1/posts/%d/" % t["postid"]}
         results.append(record)
     context["results"] = results
     if len(results) > size:
         context["results"] = results[:size]
-        context["next"] = "/api/v1/p/?size=%d&page=%d" % (size, page + 1)
+        context["next"] = "/api/v1/posts/?size=%d&page=%d" % (size, page + 1)
     else:
         context["results"] = results
         context["next"] = ""
