@@ -34,6 +34,9 @@ def get_post_list():
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("page", default=0, type=int)
+    if size < 0 or page < 0:
+        return flask.jsonify({"message": "Invalid size or page"}), 400
+
     largest_post_id = connection.execute("SELECT MAX(postid) as m FROM posts").fetchone()['m']
 
     postid_lte = flask.request.args.get("postid_lte", default=largest_post_id, type=int)
