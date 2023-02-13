@@ -31,7 +31,7 @@ def get_post_list():
 
     size = flask.request.args.get("size", default=10, type=int)
     page = flask.request.args.get("post", default=0, type=int)
-    largest_post_id = connection.execute("SELECT MAX(postid) FROM posts").fetchone()[0]
+    largest_post_id = connection.execute("SELECT MAX(postid) FROM posts").fetchone()
     postid_lte = flask.request.args.get("postid_lte", default=largest_post_id, type=int)
     cur = connection.cursor()
     cur = connection.execute(
