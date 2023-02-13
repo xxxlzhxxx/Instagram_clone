@@ -47,6 +47,7 @@ def get_post_list():
     for t in tmp:
         record = {"postid": t["postid"], "url": "/api/v1/posts/%d/" % t["postid"]}
         results.append(record)
+        
     context["results"] = results
     context["next"] = "/api/v1/posts/?size=%d&page=%d&postid_lte=%d" % (size, page + 1, postid_lte) 
   
