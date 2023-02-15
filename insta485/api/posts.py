@@ -53,6 +53,7 @@ def get_post_list():
     for post in posts:
         record = {"postid": post["postid"], "url": "/api/v1/posts/%d/" % post["postid"]}
         results.append(record)
+        
     context["results"] = results
 
     if len(results) < size:

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { sys } from "typescript";
+import Comments from "./comments";
+import Get_time from "./timestamp";
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -7,9 +10,9 @@ import PropTypes from "prop-types";
 export default function Post({ url }) {
   /* Display image and post owner of a single post */
 
-
   const [imgUrl, setImgUrl] = useState("");
   const [owner, setOwner] = useState("");
+  const [cmts, setCmt] = useState([]);
 
 
   useEffect(() => {
@@ -21,14 +24,17 @@ export default function Post({ url }) {
     fetch(url, { credentials: "same-origin" })
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
+        console.log("hello\n");
         return response.json();
       })
       .then((data) => {
         // If ignoreStaleRequest was set to true, we want to ignore the results of the
         // the request. Otherwise, update the state to trigger a new render.
+        console.log("here\n");
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
+          setCmt(data.comments)
         }
       })
       .catch((error) => console.log(error));
@@ -46,11 +52,23 @@ export default function Post({ url }) {
   // Render post image and post owner
   return (
     <div className="post">
+      <a>
+        {owner}
+      </a>
+      <a>
+        <Get_time url={url}/> 
+      </a> 
+
+      
       <img src={imgUrl} alt="post_image" />
-      <p>{owner}</p>
+       
+      <Comments url={url}/>
     </div>
   );
 }
+
+
+
 
 
 Post.propTypes = {
