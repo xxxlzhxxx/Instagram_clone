@@ -46,7 +46,7 @@ function Comments ({url}){
     }
 
 
-    function handleSubmit(event){
+    function handleSubmit(){
         let tmp = {
             owner: "awderio",
             text: value

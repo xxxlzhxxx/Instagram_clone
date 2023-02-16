@@ -34,7 +34,7 @@ export default function Post({ url }) {
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
-          setTime(data.created);
+          setTime(moment.utc(data.created).local().fromNow());
         }
       })
       .catch((error) => console.log(error));
@@ -74,7 +74,9 @@ export default function Post({ url }) {
         <a>
           {owner}
         </a>
-
+        <a>
+          {time}
+        </a>
       </p>
       <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
        
