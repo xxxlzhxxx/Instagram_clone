@@ -26,13 +26,11 @@ export default function Post({ url }) {
     fetch(url, { credentials: "same-origin" })
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
-        console.log("hello\n");
         return response.json();
       })
       .then((data) => {
         // If ignoreStaleRequest was set to true, we want to ignore the results of the
         // the request. Otherwise, update the state to trigger a new render.
-        console.log("here\n");
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
@@ -76,26 +74,8 @@ export default function Post({ url }) {
         <a>
           {owner}
         </a>
-        <a>
-          {moment.utc(time).fromNow()}  
-        </a> 
+
       </p>
-      
-      <img src={imgUrl} alt="post_image" /> 
-      <a>
-        {owner}
-      </a>
-      <a>
-        <Get_time url={url}/> 
-      </a> 
-      <a>
-        {likes.numLikes}
-      </a>
-      <likeButton 
-        lognameLikesThis = {likes.lognameLikesThis}
-        changeLikes = {changeLikes}
-      />
-      
       <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
        
       <Comments url={url}/>
