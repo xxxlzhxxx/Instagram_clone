@@ -4,6 +4,8 @@ import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
 import moment from 'moment';
+import likeButton from "./likeButton";
+
 
 // The parameter of this function is an object with a string called url inside it.
 // url is a prop for the Post component.
@@ -48,6 +50,24 @@ export default function Post({ url }) {
     };
   }, [url]);
 
+  const changeLikes = (likes) => {
+    if (likes.lognameLikesThis) {
+      method = 'DELETE'
+    } else {
+      method = 'POST'
+    }
+    fetch(
+        likes.url,
+        {
+          method,
+        },
+      )
+    .then((response) => {
+      if (!response.ok) throw Error(response.statusText);
+    })
+    .then(setLikes([]))
+    .catch((error) => console.log(error));
+  }
 
   // Render post image and post owner
   return (
@@ -62,6 +82,22 @@ export default function Post({ url }) {
       </p>
       
       <img src={imgUrl} alt="post_image" /> 
+      <a>
+        {owner}
+      </a>
+      <a>
+        <Get_time url={url}/> 
+      </a> 
+      <a>
+        {likes.numLikes}
+      </a>
+      <likeButton 
+        lognameLikesThis = {likes.lognameLikesThis}
+        changeLikes = {changeLikes}
+      />
+      
+      <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
+       
       <Comments url={url}/>
     </div>
   );
