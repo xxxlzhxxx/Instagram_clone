@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
+import likeButton from "./likeButton";
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -13,7 +14,7 @@ export default function Post({ url }) {
   const [imgUrl, setImgUrl] = useState("");
   const [owner, setOwner] = useState("");
   const [cmts, setCmt] = useState([]);
-
+  const [likes, setLikes] = useState([])
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -35,6 +36,7 @@ export default function Post({ url }) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
           setCmt(data.comments)
+          setLikes(data.likes)
         }
       })
       .catch((error) => console.log(error));
@@ -48,6 +50,24 @@ export default function Post({ url }) {
     };
   }, [url]);
 
+  const changeLikes = (likes) => {
+    if (likes.lognameLikesThis) {
+      method = 'DELETE'
+    } else {
+      method = 'POST'
+    }
+    fetch(
+        likes.url,
+        {
+          method,
+        },
+      )
+    .then((response) => {
+      if (!response.ok) throw Error(response.statusText);
+    })
+    .then(setLikes([]))
+    .catch((error) => console.log(error));
+  }
 
   // Render post image and post owner
   return (
@@ -58,9 +78,15 @@ export default function Post({ url }) {
       <a>
         <Get_time url={url}/> 
       </a> 
-
+      <a>
+        {likes.numLikes}
+      </a>
+      <likeButton 
+        lognameLikesThis = {likes.lognameLikesThis}
+        changeLikes = {changeLikes}
+      />
       
-      <img src={imgUrl} alt="post_image" />
+      <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
        
       <Comments url={url}/>
     </div>
