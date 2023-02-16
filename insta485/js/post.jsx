@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
-
+import moment from 'moment';
 
 // The parameter of this function is an object with a string called url inside it.
 // url is a prop for the Post component.
@@ -12,7 +12,7 @@ export default function Post({ url }) {
 
   const [imgUrl, setImgUrl] = useState("");
   const [owner, setOwner] = useState("");
-  const [cmts, setCmt] = useState([]);
+  const [time, setTime] = useState("");
 
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Post({ url }) {
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
-          setCmt(data.comments)
+          setTime(data.created);
         }
       })
       .catch((error) => console.log(error));
@@ -52,16 +52,16 @@ export default function Post({ url }) {
   // Render post image and post owner
   return (
     <div className="post">
-      <a>
-        {owner}
-      </a>
-      <a>
-        <Get_time url={url}/> 
-      </a> 
-
+      <p>
+        <a>
+          {owner}
+        </a>
+        <a>
+          {moment.utc(time).fromNow()}  
+        </a> 
+      </p>
       
-      <img src={imgUrl} alt="post_image" />
-       
+      <img src={imgUrl} alt="post_image" /> 
       <Comments url={url}/>
     </div>
   );

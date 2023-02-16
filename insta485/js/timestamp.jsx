@@ -3,21 +3,10 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 function Get_time(props){
-    const [time, setTime] = useState("");
-
-    fetch(props.url)
-    .then((response) => {
-        if (!response.ok) throw Error(response.statusText);
-        return response.json();
-    })
-    .then((data) => {
-        setTime(moment.utc(data.created).local().fromNow())
-    })
-    .catch (error => console.log(error)); 
-
+    const convertTimeStamp = (timeStamp) => moment(timeStamp).fromNow();
     return (
         <p>
-            {time}
+            {convertTimeStamp(props.created_time)}
         </p>
     )
 }
