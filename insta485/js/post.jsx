@@ -47,7 +47,7 @@ export default function Post({ url }) {
       // should avoid updating state.
       ignoreStaleRequest = true;
     };
-  }, [url]);
+  }, [url, time]);
 
   const changeLikes = (likes) => {
     if (likes.lognameLikesThis) {

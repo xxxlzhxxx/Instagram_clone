@@ -1,16 +1,11 @@
-
-import React, { useState, useEffect } from "react";
-import PropTypes from 'prop-types';
-
+import React, { useState } from "react";
 
 
 function Comments ({url, postid}){
     const [value, setValue] = useState("");
     const [comments, setComments] = useState([]);
-
+   
     const get_all = () => {
-        console.log(value);
-        // get
         fetch(url, { credentials: "same-origin" })
         .then((response) => {
             if (!response.ok) throw Error(response.statusText);
@@ -23,17 +18,11 @@ function Comments ({url, postid}){
         .catch((error) => console.log(error));
     }
 
-
-    useEffect(()=>{
-        get_all();
-    }, [comments, value, url])
-  
-
+    get_all();
 
     const handleChange = (event)=>{
         setValue(event.target.value);
     }
-
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -42,20 +31,15 @@ function Comments ({url, postid}){
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({text: value})
-        }).then(()=>{
-            console.log("chao")
         })
         .then((response) => {    
-            return response.json();
-        })
-        .then((data) => {
             setValue("");
+            return response.json();
         })
         .catch(error => console.log(error));  
     };
       
 
-    
     return (
         <div>
             {
