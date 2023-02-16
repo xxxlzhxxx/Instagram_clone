@@ -15,13 +15,13 @@ export default function Post({ url }) {
   const [imgUrl, setImgUrl] = useState("");
   const [owner, setOwner] = useState("");
   const [time, setTime] = useState("");
+  const [postid, setPostid] = useState("");
 
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
     let ignoreStaleRequest = false;
-
-
+    
     // Call REST API to get the post's information
     fetch(url, { credentials: "same-origin" })
       .then((response) => {
@@ -35,6 +35,7 @@ export default function Post({ url }) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
           setTime(moment.utc(data.created).local().fromNow());
+          setPostid(data.postid);
         }
       })
       .catch((error) => console.log(error));
@@ -80,7 +81,7 @@ export default function Post({ url }) {
       </p>
       <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
        
-      <Comments url={url}/>
+      <Comments url={url} postid={postid}/>
     </div>
   );
 }
