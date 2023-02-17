@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
-import likeButton from "./likeButton";
+import LikeButton from "./likeButton";
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -15,6 +15,7 @@ export default function Post({ url }) {
   const [owner, setOwner] = useState("");
   const [cmts, setCmt] = useState([]);
   const [likes, setLikes] = useState([])
+
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -50,23 +51,76 @@ export default function Post({ url }) {
     };
   }, [url]);
 
-  const changeLikes = (likes) => {
+
+  const changeLikes = () => {
+    let method
     if (likes.lognameLikesThis) {
       method = 'DELETE'
     } else {
       method = 'POST'
     }
     fetch(
-        likes.url,
-        {
-          method,
-        },
-      )
+      likes.url,
+      {
+        credentials: "same-origin",
+        method,
+      },
+    )
     .then((response) => {
       if (!response.ok) throw Error(response.statusText);
     })
-    .then(setLikes([]))
     .catch((error) => console.log(error));
+    method = 'GET'
+    console.log(url)
+    fetch(url, { credentials: "same-origin" })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        // console.log("hello\n");
+        return response.json();
+      })
+      .then((data) => {
+        console.log("here\n");
+          setLikes(data.likes)
+      })
+      .catch((error) => console.log(error));
+  }
+
+  const imageChangeLikes = () => {
+    let method
+    if (!likes.lognameLikesThis) {
+      method = 'POST'
+      fetch(
+        likes.url,
+        {
+          credentials: "same-origin",
+          method,
+        },
+      )
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+      })
+      .catch((error) => console.log(error));
+      method = 'GET'
+      console.log(url)
+      fetch(url, { credentials: "same-origin" })
+        .then((response) => {
+          if (!response.ok) throw Error(response.statusText);
+          // console.log("hello\n");
+          return response.json();
+        })
+        .then((data) => {
+          console.log("here\n");
+            setLikes(data.likes)
+        })
+        .catch((error) => console.log(error));
+    }
+  }
+
+  let liketext
+  if (likes.numLikes === 1) {
+    liketext = 'like'
+  } else {
+    liketext = 'likes'
   }
 
   // Render post image and post owner
@@ -78,15 +132,13 @@ export default function Post({ url }) {
       <a>
         <Get_time url={url}/> 
       </a> 
-      <a>
-        {likes.numLikes}
-      </a>
-      <likeButton 
+      {likes.numLikes} {liketext}
+      <LikeButton 
         lognameLikesThis = {likes.lognameLikesThis}
         changeLikes = {changeLikes}
       />
       
-      <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
+      <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
        
       <Comments url={url}/>
     </div>

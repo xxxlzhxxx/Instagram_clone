@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 
 export default function likeButton(props) {
     const {lognameLikesThis, changeLikes} = props
+    let buttonText
     if (lognameLikesThis === true) {
         buttonText = 'unlike';
     } else {
@@ -9,9 +10,7 @@ export default function likeButton(props) {
     }
     return (
         <button className="like-unlike-button" 
-            onClick={() => {
-                {changeLikes}
-            }}>
+            onClick={changeLikes}>
             {buttonText}
         </button>
     )

@@ -112,6 +112,8 @@ def get_post(postid_url_slug):
         if like["owner"] == logname:
             lk["lognameLikesThis"] = True
             lk["url"] = "/api/v1/likes/%d/" % like["likeid"]
+        else:
+            lk["url"] = "/api/v1/likes/?postid=%d" % postid
 
     context["comments_url"] = "/api/v1/comments/?postid=%d" % postid
     context["comments"] = comments
