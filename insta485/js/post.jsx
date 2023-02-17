@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
+<<<<<<< HEAD
 import LikeButton from "./likeButton";
+=======
+import moment from 'moment';
+import likeButton from "./likeButton";
+>>>>>>> e18ed33b0c9791bb6e4dece6fed24158f6f74acd
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -13,31 +18,29 @@ export default function Post({ url }) {
 
   const [imgUrl, setImgUrl] = useState("");
   const [owner, setOwner] = useState("");
-  const [cmts, setCmt] = useState([]);
-  const [likes, setLikes] = useState([])
+  const [time, setTime] = useState("");
+  const [postid, setPostid] = useState("");
+
 
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
     let ignoreStaleRequest = false;
-
-
+    
     // Call REST API to get the post's information
     fetch(url, { credentials: "same-origin" })
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
-        console.log("hello\n");
         return response.json();
       })
       .then((data) => {
         // If ignoreStaleRequest was set to true, we want to ignore the results of the
         // the request. Otherwise, update the state to trigger a new render.
-        console.log("here\n");
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
-          setCmt(data.comments)
-          setLikes(data.likes)
+          setTime(moment.utc(data.created).local().fromNow());
+          setPostid(data.postid);
         }
       })
       .catch((error) => console.log(error));
@@ -126,6 +129,7 @@ export default function Post({ url }) {
   // Render post image and post owner
   return (
     <div className="post">
+<<<<<<< HEAD
       <a>
         {owner}
       </a>
@@ -139,8 +143,19 @@ export default function Post({ url }) {
       />
       
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
+=======
+      <p>
+        <a>
+          {owner}
+        </a>
+        <a>
+          {time}
+        </a>
+      </p>
+      <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
+>>>>>>> e18ed33b0c9791bb6e4dece6fed24158f6f74acd
        
-      <Comments url={url}/>
+      <Comments url={url} postid={postid}/>
     </div>
   );
 }
