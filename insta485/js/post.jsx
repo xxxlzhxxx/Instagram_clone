@@ -164,8 +164,10 @@ export default function Post({url}) {
     <div className="post">
       <a href={ownerShowUrl}>
         <img src={ownerImgUrl} alt="owner img" width="50pm" height="50pm"/>
-        {owner}&nbsp;
+        {owner}
       </a>
+      &nbsp;
+      &nbsp;
       <a href={`/posts/${postid}`}>
         {time}
       </a>
@@ -199,10 +201,11 @@ export default function Post({url}) {
           }
           return (
             <div key={comment.commentid}>
-              {delete_button}
               <a href={comment.ownerShowUrl}>{comment.owner} </a>
               &nbsp;
               <span>{comment.text}</span>
+              &nbsp;
+              {delete_button}
             </div>
           );
         })}

@@ -34,6 +34,12 @@
   vertical-align:bottom
 }
 
+.post {
+  margin: 5%;
+  border: solid;
+  width: 60%;
+}
+
 .topnav-left {
   float: left;
   padding: 18px 16px;
@@ -126,4 +132,8 @@ hr.new {
 .profile-dim {
   height: "60px";
   width: "60px";
+}
+
+.time_stamp {
+  text-align: left;
 }
