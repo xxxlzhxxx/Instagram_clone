@@ -152,6 +152,14 @@ function Post(_ref) {
     _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState15, 2),
     num = _useState16[0],
     setNum = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState17, 2),
+    ownerImgUrl = _useState18[0],
+    setOwnerImgUrl = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
+    _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState19, 2),
+    ownerShowUrl = _useState20[0],
+    setOwnershowurl = _useState20[1];
   var commentid;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -172,7 +180,9 @@ function Post(_ref) {
         setOwner(data.owner);
         setTime(moment__WEBPACK_IMPORTED_MODULE_2___default().utc(data.created).local().fromNow());
         setPostid(data.postid);
+        setOwnershowurl(data.ownerShowUrl);
         setLikes(data.likes);
+        setOwnerImgUrl(data.ownerImgUrl);
         console.log(data);
         var newcmt = data.comments.map(function (_ref2) {
           var ownerShowUrl = _ref2.ownerShowUrl,
@@ -283,7 +293,16 @@ function Post(_ref) {
   console.log(url);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "post"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", null, owner, "\xA0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", null, time)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
+    href: ownerShowUrl
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
+    src: ownerImgUrl,
+    alt: "owner img",
+    width: "50pm",
+    height: "50pm"
+  }), owner, "\xA0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
+    href: "/posts/".concat(postid)
+  }, time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
     src: imgUrl,
     alt: "post_image",
     onDoubleClick: imageChangeLikes
@@ -308,7 +327,7 @@ function Post(_ref) {
       key: comment.commentid
     }, delete_button, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
       href: comment.ownerShowUrl
-    }, comment.owner, " \xA0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text));
+    }, comment.owner, " "), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text));
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", {
     onSubmit: handleSubmit
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("input", {

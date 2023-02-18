@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect  } from "react";
 import PropTypes from "prop-types";
 import moment from 'moment';
 import LikeButton from "./likeButton";
@@ -19,6 +19,8 @@ export default function Post({url}) {
   const [value, setValue] = useState("");
   const [comments, setComments] = useState([]);
   const [num, setNum] = useState(0);
+  const [ownerImgUrl, setOwnerImgUrl] = useState('');
+  const [ownerShowUrl, setOwnershowurl] = useState("");
   var commentid;
 
 
@@ -41,7 +43,9 @@ export default function Post({url}) {
           setOwner(data.owner);
           setTime(moment.utc(data.created).local().fromNow());
           setPostid(data.postid);
+          setOwnershowurl(data.ownerShowUrl);
           setLikes(data.likes);
+          setOwnerImgUrl(data.ownerImgUrl);
           console.log(data);
           const newcmt = data.comments.map(
             ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis }) => ({
@@ -158,15 +162,14 @@ export default function Post({url}) {
   console.log(url)
   return (
     <div className="post">
-      <p>
-        <a>
-          {owner}&nbsp;
-        </a>
-        <a>
-          {time}
-        </a>
-      </p>
-      
+      <a href={ownerShowUrl}>
+        <img src={ownerImgUrl} alt="owner img" width="50pm" height="50pm"/>
+        {owner}&nbsp;
+      </a>
+      <a href={`/posts/${postid}`}>
+        {time}
+      </a>
+      <br></br>
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
       
       <p>
@@ -197,7 +200,8 @@ export default function Post({url}) {
           return (
             <div key={comment.commentid}>
               {delete_button}
-              <a href={comment.ownerShowUrl}>{comment.owner} &nbsp;</a>
+              <a href={comment.ownerShowUrl}>{comment.owner} </a>
+              &nbsp;
               <span>{comment.text}</span>
             </div>
           );
