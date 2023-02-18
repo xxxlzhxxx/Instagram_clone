@@ -4,7 +4,7 @@ import { sys } from "typescript";
 import Get_time from "./timestamp";
 import moment from 'moment';
 import LikeButton from "./likeButton";
-import DeleteCommentButton from "./deleteCommentButton";
+
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -177,15 +177,20 @@ export default function Post({url}) {
     <div className="post">
       <p>
         <a>
-          {owner}
+          {owner}&nbsp;
         </a>
         <a>
           {time}
         </a>
       </p>
-      <a>{likes.numLikes} {liketext}</a>
-      <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
+      
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
+      
+      <p>
+        <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
+        &nbsp;
+        {likes.numLikes} {liketext}
+      </p>
 
 
 
