@@ -3,12 +3,8 @@ import PropTypes from "prop-types";
 import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
-<<<<<<< HEAD
-import LikeButton from "./likeButton";
-=======
 import moment from 'moment';
 import likeButton from "./likeButton";
->>>>>>> e18ed33b0c9791bb6e4dece6fed24158f6f74acd
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -129,21 +125,6 @@ export default function Post({ url }) {
   // Render post image and post owner
   return (
     <div className="post">
-<<<<<<< HEAD
-      <a>
-        {owner}
-      </a>
-      <a>
-        <Get_time url={url}/> 
-      </a> 
-      {likes.numLikes} {liketext}
-      <LikeButton 
-        lognameLikesThis = {likes.lognameLikesThis}
-        changeLikes = {changeLikes}
-      />
-      
-      <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
-=======
       <p>
         <a>
           {owner}
@@ -152,8 +133,7 @@ export default function Post({ url }) {
           {time}
         </a>
       </p>
-      <img src={imgUrl} alt="post_image" onDoubleClick={changeLikes}/>
->>>>>>> e18ed33b0c9791bb6e4dece6fed24158f6f74acd
+      <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
        
       <Comments url={url} postid={postid}/>
     </div>
