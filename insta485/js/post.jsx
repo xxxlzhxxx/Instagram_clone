@@ -71,7 +71,6 @@ export default function Post({url}) {
     })
     .catch((error) => console.log(error));
     method = 'GET'
-    console.log(url)
     fetch(url, { credentials: "same-origin" })
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);

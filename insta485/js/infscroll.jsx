@@ -6,8 +6,6 @@ export default function InfScroll() {
     const [posts, setPosts] = useState([]);
     const [nextURL, setNextURL] = useState("/api/v1/posts/");
     function fetchPostIDs() {
-        console.log("posts", posts); 
-        console.log("url", nextURL);
         fetch(nextURL, {credentials: "same-origin"})
             .then((response) => {
                 if (!response.ok) throw Error(response.statusText);

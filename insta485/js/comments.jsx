@@ -1,14 +1,11 @@
+import { get } from "cypress/types/jquery";
 import React, { useEffect, useState, useCallback } from "react";
 import DeleteCommentButton from "./deleteCommentButton";
 
-function Comments({ url, postid}) {
+function Comments({ url, postid }) {
   const [value, setValue] = useState("");
   const [comments, setComments] = useState([]);
-  const [numUpdates, setNumUpdates] = useState(0);
-
-  const update = useCallback(() => {
-    setNumUpdates(numUpdates + 1);
-  }, [numUpdates]);
+  const [deletec, setDeletec] = useState(0);
 
   const get_all = () => {
     fetch(url, { credentials: "same-origin" })
@@ -18,12 +15,12 @@ function Comments({ url, postid}) {
       })
       .then((data) => {
         const newcmt = data.comments.map(
-          ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis}) => ({
+          ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis }) => ({
             ownerShowUrl,
             commentid,
             owner,
             text,
-            lognameOwnsThis
+            lognameOwnsThis,
           })
         );
         setComments(newcmt);
@@ -31,9 +28,21 @@ function Comments({ url, postid}) {
       .catch((error) => console.log(error));
   };
 
-  useEffect(() => {
-    get_all();
-  }, [numUpdates, comments]);
+  get_all();
+
+  const handle_click = () => {
+    console.log("handle_click");
+    fetch(`/api/v1/comments/${comment.commentid}/`, {
+      credentials: "same-origin",
+      method: "DELETE",
+    })
+    .then((response) => {
+      if (!response.ok) throw Error(response.statusText);
+      
+    })
+    .then(updateFn)
+    .catch((error) => console.log(error));
+  };
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -59,12 +68,7 @@ function Comments({ url, postid}) {
       {comments.map((comment) => {
         let delete_button;
         if (comment.lognameOwnsThis === true) {
-          delete_button = (
-            <DeleteCommentButton
-              url={`/api/v1/comments/$(comment.commentid)/`}
-              updateFn={update}
-            />
-          );
+          delete_button = <DeleteCommentButton handle_click={handle_click} />;
         } else {
           delete_button = null;
         }
