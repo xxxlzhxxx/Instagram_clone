@@ -113,11 +113,7 @@ describe("Index page when awdeorio is logged in with real database", () => {
   it("Updates the UI when liking or unliking a post on normal server", () => {
     // Intercept calls to these routes and store aliases unlike and
     // newLike so that we can reference the requests later.
-<<<<<<< HEAD
-    cy.intercept("DELETE", "/api/v1/likes/6").as("unlike");
-=======
     cy.intercept("DELETE", "/api/v1/likes/6/").as("unlike");
->>>>>>> new commit
     cy.intercept("POST", "/api/v1/likes/?postid=3").as("newLike");
 
     // Go to the home page.

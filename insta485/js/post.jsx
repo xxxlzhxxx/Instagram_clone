@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { sys } from "typescript";
-import Get_time from "./timestamp";
 import moment from 'moment';
 import LikeButton from "./likeButton";
 
