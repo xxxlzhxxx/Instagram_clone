@@ -9,7 +9,7 @@ import LikeButton from "./likeButton";
 
 // The parameter of this function is an object with a string called url inside it.
 // url is a prop for the Post component.
-export default function Post({ url }) {
+export default function Post({url}) {
   /* Display image and post owner of a single post */
 
   const [imgUrl, setImgUrl] = useState("");
@@ -138,7 +138,7 @@ export default function Post({ url }) {
       <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
        
-      <Comments url={url} postid={postid} owner={owner}/>
+      <Comments url={url} postid={postid} />
     </div>
   );
 }

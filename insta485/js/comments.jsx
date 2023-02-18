@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DeleteCommentButton from "./deleteCommentButton";
 
-function Comments({ url, postid, owner }) {
+function Comments({ url, postid}) {
   const [value, setValue] = useState("");
   const [comments, setComments] = useState([]);
   const [numUpdates, setNumUpdates] = useState(0);
@@ -18,11 +18,12 @@ function Comments({ url, postid, owner }) {
       })
       .then((data) => {
         const newcmt = data.comments.map(
-          ({ ownerShowUrl, commentid, owner, text }) => ({
+          ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis}) => ({
             ownerShowUrl,
             commentid,
             owner,
             text,
+            lognameOwnsThis
           })
         );
         setComments(newcmt);
@@ -57,7 +58,7 @@ function Comments({ url, postid, owner }) {
     <div>
       {comments.map((comment) => {
         let delete_button;
-        if (comment.owner === owner) {
+        if (comment.lognameOwnsThis === true) {
           delete_button = (
             <DeleteCommentButton
               url={`/api/v1/comments/$(comment.commentid)/`}
@@ -67,13 +68,13 @@ function Comments({ url, postid, owner }) {
         } else {
           delete_button = null;
         }
-        console.log(comment.owner);
-        console.log(owner);
-        <div>
-          {delete_button}
-          <a href={comment.ownerShowUrl}>{comment.owner} &nbsp;</a>
-          <span>{comment.text}</span>
-        </div>;
+        return (
+          <div key={comment.commentid}>
+            {delete_button}
+            <a href={comment.ownerShowUrl}>{comment.owner} &nbsp;</a>
+            <span>{comment.text}</span>
+          </div>
+        );
       })}
       <form onSubmit={handleSubmit}>
         <input value={value} onChange={handleChange} required />
