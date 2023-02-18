@@ -16,7 +16,7 @@ export default function Post({ url }) {
   const [owner, setOwner] = useState("");
   const [time, setTime] = useState("");
   const [postid, setPostid] = useState("");
-
+  
 
 
   useEffect(() => {

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteCommentButton from './deleteCommentButton';
 
 function Comments ({url, postid, owner}){
     const [value, setValue] = useState("");
     const [comments, setComments] = useState([]);
+    const [numUpdates, setNumUpdates] = useState(0);
+    
     const update = useCallback(() => {
         setNumUpdates(numUpdates + 1);
-        // console.log(`update1 ${numUpdates}`);
     }, [numUpdates]);
 
     const get_all = () => {
@@ -25,7 +26,10 @@ function Comments ({url, postid, owner}){
         .catch((error) => console.log(error));
     }
 
-    get_all();
+    useEffect(() => {
+        get_all();
+    }, [numUpdates, comments])
+    
 
     const handleChange = (event)=>{
         setValue(event.target.value);

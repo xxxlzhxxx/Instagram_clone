@@ -16,11 +16,11 @@ function DeleteCommentButton(props) {
             method: 'DELETE',
           },
         )
-          .then((response) => {
-            if (!response.ok) throw Error(response.statusText);
-          })
-          .then(updateFn)
-          .catch((error) => console.log(error));
+        .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        })
+        .then(updateFn)
+        .catch((error) => console.log(error));
       }}
     >
       Delete
