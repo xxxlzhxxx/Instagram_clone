@@ -46,80 +46,8 @@ def show_index():
         logged_name = flask.session["username"]
     else:
         return flask.redirect(flask.url_for("login"))
-
-    # Connect to database
-    connection = insta485.model.get_db()
-
-    # Query database for all posts, then specify the posts of the
-    # people I am following, OR my posts
-    cur = connection.execute(
-        "SELECT posts.*, users.filename AS profile_pic, posts.created "
-        "AS timestamp FROM posts, users, following "
-        "WHERE (posts.owner = users.username AND following.username1 = ? "
-        "AND posts.owner = following.username2) "
-        "OR (posts.owner = ? AND posts.owner = users.username ) "
-        "GROUP BY posts.postid "
-        "ORDER BY posts.created",
-        (logged_name, logged_name),
-    )
-
-    posts = cur.fetchall()
-
-    # Fixing timestamps
-    for post in posts:
-        post["timestamp"] = arrow.get(
-            post["timestamp"], "YYYY-MM-DD HH:mm:ss"
-        ).humanize()
-
-    for post in posts:
-        cur2 = connection.execute(
-            "SELECT COUNT(*) AS like, likes.owner "
-            "FROM likes, users "
-            "WHERE likes.postid = ? AND likes.owner = users.username",
-            (post["postid"],),
-        )
-        # All likes for this post that have a matching postid
-        count = cur2.fetchall()
-        post["like"] = count[0]["like"]
-
-        cur2_2 = connection.execute(
-            "SELECT * FROM likes WHERE postid = ? AND owner = ?",
-            (post["postid"], logged_name),
-        )
-        liked = cur2_2.fetchone()
-        if liked:
-            post["is_liked"] = True
-        else:
-            post["is_liked"] = False
-
-    # Getting all comments
-    cur3 = connection.execute(
-        "SELECT comments.commentid, comments.text, users.username, "
-        "posts.postid FROM users, comments, posts "
-        "WHERE comments.owner = users.username AND "
-        "comments.postid = posts.postid "
-        "ORDER BY comments.commentid ASC"
-    )
-
-    # Assigning return values as tuples in all_comments
-    # Looks like this: [(<commentid>, <text>, <username>, <postid>)]
-    all_comments = cur3.fetchall()
-
-    # Assigning comments to each post
-    for post in posts:
-        # Creates a new column named "comments" in the posts dictionary
-        post["comments"] = []
-        for comment in all_comments:
-            # Looks for comments from this specific postid
-            if comment["postid"] == post["postid"]:
-                post["comments"].append(
-                    {"username": comment["username"], "text": comment["text"]}
-                )
-            # No need to pass the commentid since they're
-            # already ordered by commentid
-
     # Add database info to context
-    context = {"logname": logged_name, "posts": posts}
+    context = {"logname": logged_name}
     return flask.render_template("index.html", **context)
 
 
