@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import DeleteCommentButton from './deleteCommentButton';
 
-
-function Comments ({url, postid}){
+function Comments ({url, postid, owner}){
     const [value, setValue] = useState("");
     const [comments, setComments] = useState([]);
-   
+    const update = useCallback(() => {
+        setNumUpdates(numUpdates + 1);
+        // console.log(`update1 ${numUpdates}`);
+    }, [numUpdates]);
+
     const get_all = () => {
         fetch(url, { credentials: "same-origin" })
         .then((response) => {
@@ -12,7 +16,10 @@ function Comments ({url, postid}){
             return response.json();
         })
         .then((data) => {
-            const newcmt = data.comments.map(({ownerShowUrl, owner, text}) => ({ownerShowUrl, owner, text}));
+            const newcmt = data.comments.map(({
+                ownerShowUrl, commentid, owner, text
+            }) => ({
+                ownerShowUrl, commentid, owner, text}));
             setComments(newcmt)
         })
         .catch((error) => console.log(error));
@@ -43,7 +50,12 @@ function Comments ({url, postid}){
     return (
         <div>
             {
-                comments.map((comment)=> (
+                comments.map((comment) => {
+                    if (comment.owner === owner){
+                        <DeleteCommentButton 
+                        url={`/api/v1/comments/$(comment.commentid)/`} 
+                        updateFn={update}/>
+                    }
                     <div>
                         <a href={comment.ownerShowUrl}>
                             { comment.owner } &nbsp;
@@ -51,8 +63,8 @@ function Comments ({url, postid}){
                         <span> 
                             { comment.text }
                         </span>
-                    </div>
-                ))
+                    </div> 
+                })
             }
             <form onSubmit={handleSubmit}>
                 <input value={value} onChange={handleChange} required/>     
