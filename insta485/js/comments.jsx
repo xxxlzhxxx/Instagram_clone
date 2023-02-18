@@ -56,7 +56,6 @@ function Comments ({url, postid}){
             }
             <form onSubmit={handleSubmit}>
                 <input value={value} onChange={handleChange} required/>     
-                <input type="submit" value="comment" />
             </form>
         </div>
     );
