@@ -4,7 +4,7 @@ import { sys } from "typescript";
 import Comments from "./comments";
 import Get_time from "./timestamp";
 import moment from 'moment';
-import likeButton from "./likeButton";
+import LikeButton from "./likeButton";
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -16,7 +16,7 @@ export default function Post({ url }) {
   const [owner, setOwner] = useState("");
   const [time, setTime] = useState("");
   const [postid, setPostid] = useState("");
-
+  const [likes, setLikes] = useState([])
 
 
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function Post({ url }) {
           setOwner(data.owner);
           setTime(moment.utc(data.created).local().fromNow());
           setPostid(data.postid);
+          setLikes(data.likes)
         }
       })
       .catch((error) => console.log(error));
@@ -51,7 +52,7 @@ export default function Post({ url }) {
   }, [url]);
 
 
-  const changeLikes = () => {
+  const changelikes = () => {
     let method
     if (likes.lognameLikesThis) {
       method = 'DELETE'
@@ -133,6 +134,8 @@ export default function Post({ url }) {
           {time}
         </a>
       </p>
+      <a>{likes.numLikes} {liketext}</a>
+      <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
        
       <Comments url={url} postid={postid}/>
