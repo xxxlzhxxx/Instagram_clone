@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { sys } from "typescript";
-import Comments from "./comments";
 import Get_time from "./timestamp";
 import moment from 'moment';
 import LikeButton from "./likeButton";
+import DeleteCommentButton from "./deleteCommentButton";
 
 
 // The parameter of this function is an object with a string called url inside it.
@@ -17,6 +17,10 @@ export default function Post({url}) {
   const [time, setTime] = useState("");
   const [postid, setPostid] = useState("");
   const [likes, setLikes] = useState([])
+  const [value, setValue] = useState("");
+  const [comments, setComments] = useState([]);
+  const [num, setNum] = useState(0);
+  var commentid;
 
 
   useEffect(() => {
@@ -32,12 +36,23 @@ export default function Post({url}) {
       .then((data) => {
         // If ignoreStaleRequest was set to true, we want to ignore the results of the
         // the request. Otherwise, update the state to trigger a new render.
+        console.log(url);
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
           setTime(moment.utc(data.created).local().fromNow());
           setPostid(data.postid);
-          setLikes(data.likes)
+          setLikes(data.likes);
+          const newcmt = data.comments.map(
+            ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis }) => ({
+              ownerShowUrl,
+              commentid,
+              owner,
+              text,
+              lognameOwnsThis,
+            })
+          );
+          setComments(newcmt);
         }
       })
       .catch((error) => console.log(error));
@@ -49,7 +64,7 @@ export default function Post({url}) {
       // should avoid updating state.
       ignoreStaleRequest = true;
     };
-  }, [url]);
+  }, [url, value, num]);
 
 
   const changelikes = () => {
@@ -122,7 +137,42 @@ export default function Post({url}) {
     liketext = 'likes'
   }
 
+  
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(`/api/v1/comments/?postid=${postid}`, {
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      method: "POST",
+      body: JSON.stringify({ text: value }),
+    })
+      .then((response) => {
+        setValue("");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handle_click = (e, commentid) => {
+    console.log("handle_click");
+    e.preventDefault();
+    fetch(`/api/v1/comments/${commentid}/`, {
+      credentials: "same-origin",
+      method: "DELETE",
+    })
+    .then((response) => {
+      console.log("you click");
+      setNum(num+1);
+      if (!response.ok) throw Error(response.statusText);
+    })
+    .catch((error) => console.log(error));
+  };
+
   // Render post image and post owner
+  console.log(url)
   return (
     <div className="post">
       <p>
@@ -136,8 +186,38 @@ export default function Post({url}) {
       <a>{likes.numLikes} {liketext}</a>
       <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
-       
-      <Comments url={url} postid={postid} />
+
+
+
+      
+      <div>
+        {comments.map((comment) => {
+          let delete_button;
+          if (comment.lognameOwnsThis === true) {
+            commentid - comment.commentid;
+            delete_button = 
+              <button
+              type="button"
+              className="delete-comment-button btn btn-warning"
+              onClick={(e) => handle_click(e, comment.commentid)}
+              >
+                Delete
+            </button>;
+          } else {
+            delete_button = null;
+          }
+          return (
+            <div key={comment.commentid}>
+              {delete_button}
+              <a href={comment.ownerShowUrl}>{comment.owner} &nbsp;</a>
+              <span>{comment.text}</span>
+            </div>
+          );
+        })}
+        <form onSubmit={handleSubmit}>
+          <input value={value} onChange={handleChange} required />
+        </form>
+      </div>
     </div>
   );
 }
