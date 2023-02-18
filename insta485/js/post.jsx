@@ -138,7 +138,7 @@ export default function Post({ url }) {
       <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
       <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
        
-      <Comments url={url} postid={postid}/>
+      <Comments url={url} postid={postid} owner={owner}/>
     </div>
   );
 }
