@@ -7,6 +7,7 @@ import LikeButton from "./likeButton";
 
 
 
+
 // The parameter of this function is an object with a string called url inside it.
 // url is a prop for the Post component.
 export default function Post({url}) {
@@ -43,6 +44,7 @@ export default function Post({url}) {
           setTime(moment.utc(data.created).local().fromNow());
           setPostid(data.postid);
           setLikes(data.likes);
+          console.log(data);
           const newcmt = data.comments.map(
             ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis }) => ({
               ownerShowUrl,
@@ -68,43 +70,38 @@ export default function Post({url}) {
 
 
   const changelikes = () => {
-    let method
+    let method;
+    let uurl;
     if (likes.lognameLikesThis) {
       method = 'DELETE'
+      uurl = likes.url;
     } else {
       method = 'POST'
+      uurl = `/api/v1/likes/?postid=${postid}`;
     }
     fetch(
-      likes.url,
+      uurl,
       {
         credentials: "same-origin",
         method,
       },
     )
     .then((response) => {
+      console.log(likes);
+      console.log(likes.url);
       if (!response.ok) throw Error(response.statusText);
+      setNum(num+1);
     })
     .catch((error) => console.log(error));
-    method = 'GET'
-    fetch(url, { credentials: "same-origin" })
-      .then((response) => {
-        if (!response.ok) throw Error(response.statusText);
-        // console.log("hello\n");
-        return response.json();
-      })
-      .then((data) => {
-        console.log("here\n");
-          setLikes(data.likes)
-      })
-      .catch((error) => console.log(error));
   }
 
   const imageChangeLikes = () => {
     let method
+    let uurl = `/api/v1/likes/?postid=${postid}`;
     if (!likes.lognameLikesThis) {
       method = 'POST'
       fetch(
-        likes.url,
+        uurl,
         {
           credentials: "same-origin",
           method,
@@ -112,21 +109,9 @@ export default function Post({url}) {
       )
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
+        setNum(num+1);
       })
       .catch((error) => console.log(error));
-      method = 'GET'
-      console.log(url)
-      fetch(url, { credentials: "same-origin" })
-        .then((response) => {
-          if (!response.ok) throw Error(response.statusText);
-          // console.log("hello\n");
-          return response.json();
-        })
-        .then((data) => {
-          console.log("here\n");
-            setLikes(data.likes)
-        })
-        .catch((error) => console.log(error));
     }
   }
 
