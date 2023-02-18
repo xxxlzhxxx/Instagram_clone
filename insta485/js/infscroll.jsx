@@ -17,14 +17,15 @@ export default function InfScroll() {
             })
             .catch((error) => console.log(error));
     }
-    fetchPostIDs();
+    useEffect(() => {
+        fetchPostIDs();
+    }, []);
     return (
         <InfiniteScroll
             dataLength={posts.length}
             next={fetchPostIDs}
             hasMore={nextURL === "" ? false : true}>
             {posts.map((post) => <Post key={post.postid} url={post.url} />)}
-
         </InfiniteScroll>
         );
 }

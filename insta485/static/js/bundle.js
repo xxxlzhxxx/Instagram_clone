@@ -43,7 +43,9 @@ function InfScroll() {
       return console.log(error);
     });
   }
-  fetchPostIDs();
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    fetchPostIDs();
+  }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_infinite_scroll_component__WEBPACK_IMPORTED_MODULE_2__["default"], {
     dataLength: posts.length,
     next: fetchPostIDs,
@@ -174,7 +176,6 @@ function Post(_ref) {
     }).then(function (data) {
       // If ignoreStaleRequest was set to true, we want to ignore the results of the
       // the request. Otherwise, update the state to trigger a new render.
-      console.log(url);
       if (!ignoreStaleRequest) {
         setImgUrl(data.imgUrl);
         setOwner(data.owner);
@@ -183,7 +184,6 @@ function Post(_ref) {
         setOwnershowurl(data.ownerShowUrl);
         setLikes(data.likes);
         setOwnerImgUrl(data.ownerImgUrl);
-        console.log(data);
         var newcmt = data.comments.map(function (_ref2) {
           var ownerShowUrl = _ref2.ownerShowUrl,
             commentid = _ref2.commentid,
@@ -224,8 +224,6 @@ function Post(_ref) {
       credentials: "same-origin",
       method: method
     }).then(function (response) {
-      console.log(likes);
-      console.log(likes.url);
       if (!response.ok) throw Error(response.statusText);
       setNum(num + 1);
     })["catch"](function (error) {
@@ -275,13 +273,11 @@ function Post(_ref) {
     });
   };
   var handle_click = function handle_click(e, commentid) {
-    console.log("handle_click");
     e.preventDefault();
     fetch("/api/v1/comments/".concat(commentid, "/"), {
       credentials: "same-origin",
       method: "DELETE"
     }).then(function (response) {
-      console.log("you click");
       setNum(num + 1);
       if (!response.ok) throw Error(response.statusText);
     })["catch"](function (error) {
@@ -290,7 +286,6 @@ function Post(_ref) {
   };
 
   // Render post image and post owner
-  console.log(url);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "post"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {

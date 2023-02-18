@@ -37,7 +37,6 @@ export default function Post({url}) {
       .then((data) => {
         // If ignoreStaleRequest was set to true, we want to ignore the results of the
         // the request. Otherwise, update the state to trigger a new render.
-        console.log(url);
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
           setOwner(data.owner);
@@ -46,7 +45,6 @@ export default function Post({url}) {
           setOwnershowurl(data.ownerShowUrl);
           setLikes(data.likes);
           setOwnerImgUrl(data.ownerImgUrl);
-          console.log(data);
           const newcmt = data.comments.map(
             ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis }) => ({
               ownerShowUrl,
@@ -89,8 +87,6 @@ export default function Post({url}) {
       },
     )
     .then((response) => {
-      console.log(likes);
-      console.log(likes.url);
       if (!response.ok) throw Error(response.statusText);
       setNum(num+1);
     })
@@ -144,14 +140,12 @@ export default function Post({url}) {
   };
 
   const handle_click = (e, commentid) => {
-    console.log("handle_click");
     e.preventDefault();
     fetch(`/api/v1/comments/${commentid}/`, {
       credentials: "same-origin",
       method: "DELETE",
     })
     .then((response) => {
-      console.log("you click");
       setNum(num+1);
       if (!response.ok) throw Error(response.statusText);
     })
@@ -159,7 +153,6 @@ export default function Post({url}) {
   };
 
   // Render post image and post owner
-  console.log(url)
   return (
     <div className="post">
       <a href={ownerShowUrl}>
