@@ -14,3 +14,7 @@ pydocstyle insta485
 pylint --disable=cyclic-import --unsafe-load-any-extension=y insta485
 
 pytest -v tests
+
+npx eslint --ext jsx insta485/js
+
+npx prettier --check insta485/js

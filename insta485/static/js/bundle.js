@@ -30,26 +30,26 @@ function InfScroll() {
     _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState3, 2),
     nextURL = _useState4[0],
     setNextURL = _useState4[1];
-  function fetchPostIDs() {
+  var fetchPostIDs = function fetchPostIDs() {
     fetch(nextURL, {
       credentials: "same-origin"
     }).then(function (response) {
       if (!response.ok) throw Error(response.statusText);
       return response.json();
     }).then(function (data) {
-      setPosts(posts.concat(data['results']));
-      setNextURL(data['next']);
+      setPosts(posts.concat(data.results));
+      setNextURL(data.next);
     })["catch"](function (error) {
       return console.log(error);
     });
-  }
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     fetchPostIDs();
-  }, []);
+  });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_infinite_scroll_component__WEBPACK_IMPORTED_MODULE_2__["default"], {
     dataLength: posts.length,
     next: fetchPostIDs,
-    hasMore: nextURL === "" ? false : true
+    hasMore: nextURL !== ""
   }, posts.map(function (post) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_post__WEBPACK_IMPORTED_MODULE_3__["default"], {
       key: post.postid,
@@ -74,16 +74,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
+
+// liekebutton
 function likeButton(props) {
   var lognameLikesThis = props.lognameLikesThis,
     changeLikes = props.changeLikes;
   var buttonText;
   if (lognameLikesThis === true) {
-    buttonText = 'unlike';
+    buttonText = "unlike";
   } else {
-    buttonText = 'like';
+    buttonText = "like";
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
     className: "like-unlike-button",
     onClick: changeLikes
   }, buttonText);
@@ -57151,7 +57154,7 @@ var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(document
 // Insert the post component into the DOM
 // root.render(<Post url="/api/v1/posts/1/" />);
 root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_infscroll__WEBPACK_IMPORTED_MODULE_2__["default"], null));
-//root.render(<Post url="/api/v1/posts/1/" />);
+// root.render(<Post url="/api/v1/posts/1/" />);
 })();
 
 /******/ })()
