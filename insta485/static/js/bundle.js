@@ -292,7 +292,7 @@ function Post(_ref) {
     });
   };
   var likeCom = function likeCom() {
-    if (likes != []) {
+    if (likes !== []) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_likeButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
         lognameLikesThis: likes.lognameLikesThis,
         changeLikes: changelikes
@@ -335,10 +335,10 @@ function Post(_ref) {
     }), likeCom(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "comment-text"
     }, comments.map(function (comment) {
-      var delete_button;
+      var deleteButton;
       if (comment.lognameOwnsThis === true) {
         commentid - comment.commentid;
-        delete_button = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
+        deleteButton = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
           type: "button",
           className: "delete-comment-button",
           onClick: function onClick(e) {
@@ -346,13 +346,13 @@ function Post(_ref) {
           }
         }, "Delete");
       } else {
-        delete_button = null;
+        deleteButton = null;
       }
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
         key: comment.commentid
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
         href: comment.ownerShowUrl
-      }, comment.owner, " "), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text), "\xA0", delete_button);
+      }, comment.owner, " "), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text), "\xA0", deleteButton);
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", {
       onSubmit: handleSubmit,
       className: "comment-form"
@@ -362,9 +362,8 @@ function Post(_ref) {
       onChange: handleChange,
       required: true
     })))));
-  } else {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, "Loading...");
   }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, "Loading...");
 }
 Post.propTypes = {
   url: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().string.isRequired)

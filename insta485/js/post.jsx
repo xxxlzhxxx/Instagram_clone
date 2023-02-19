@@ -19,6 +19,7 @@ export default function Post({ url }) {
   const [ownerShowUrl, setOwnershowurl] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
   let commentid;
+  
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -141,7 +142,7 @@ export default function Post({ url }) {
   };
 
   const likeCom = () => {
-    if (likes != []) {
+    if (likes !== []) {
       return (
         <p>
           <LikeButton
@@ -191,10 +192,10 @@ export default function Post({ url }) {
           {likeCom()}
           <div className="comment-text">
             {comments.map((comment) => {
-              let delete_button;
+              let deleteButton;
               if (comment.lognameOwnsThis === true) {
                 commentid - comment.commentid;
-                delete_button = (
+                deleteButton = (
                   <button
                     type="button"
                     className="delete-comment-button"
@@ -204,7 +205,7 @@ export default function Post({ url }) {
                   </button>
                 );
               } else {
-                delete_button = null;
+                deleteButton = null;
               }
               return (
                 <div key={comment.commentid}>
@@ -212,7 +213,7 @@ export default function Post({ url }) {
                   &nbsp;
                   <span>{comment.text}</span>
                   &nbsp;
-                  {delete_button}
+                  {deleteButton}
                 </div>
               );
             })}
