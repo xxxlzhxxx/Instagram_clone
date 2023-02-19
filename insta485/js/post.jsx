@@ -18,7 +18,7 @@ export default function Post({ url }) {
   const [ownerImgUrl, setOwnerImgUrl] = useState("");
   const [ownerShowUrl, setOwnershowurl] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
-  var commentid;
+  let commentid;
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -87,7 +87,7 @@ export default function Post({ url }) {
 
   const imageChangeLikes = () => {
     let method;
-    let uurl = `/api/v1/likes/?postid=${postid}`;
+    const uurl = `/api/v1/likes/?postid=${postid}`;
     if (!likes.lognameLikesThis) {
       method = "POST";
       fetch(uurl, {
@@ -229,9 +229,9 @@ export default function Post({ url }) {
         </div>
       </div>
     );
-  } else {
+  } 
     return <div>Loading...</div>;
-  }
+  
 }
 
 Post.propTypes = {
