@@ -121,7 +121,6 @@ __webpack_require__.r(__webpack_exports__);
 function Post(_ref) {
   var url = _ref.url;
   /* Display image and post owner of a single post */
-
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
     _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
     imgUrl = _useState2[0],
@@ -162,6 +161,10 @@ function Post(_ref) {
     _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState19, 2),
     ownerShowUrl = _useState20[0],
     setOwnershowurl = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState21, 2),
+    dataLoaded = _useState22[0],
+    setDataLoaded = _useState22[1];
   var commentid;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -199,6 +202,7 @@ function Post(_ref) {
           };
         });
         setComments(newcmt);
+        setDataLoaded(true);
       }
     })["catch"](function (error) {
       return console.log(error);
@@ -293,67 +297,71 @@ function Post(_ref) {
     }
   };
   // Render post image and post owner
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "post"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "post card mx-auto m-2",
-    style: {
-      width: "".concat(30, "rem")
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "card-body row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "col-5"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
-    href: ownerShowUrl,
-    className: "row fw-bold text-body text-decoration-none"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "col-5"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
-    src: ownerImgUrl,
-    className: "img-thumbnail",
-    alt: owner
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "col-7 mt-3"
-  }, owner))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "col-4 offset-3 mt-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
-    href: "/posts/".concat(postid, "/"),
-    className: "text-secondary fw-bold text-decoration-none"
-  }, time))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
-    src: imgUrl,
-    alt: "post_image",
-    onDoubleClick: imageChangeLikes
-  }), likeCom(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "comment-text"
-  }, comments.map(function (comment) {
-    var delete_button;
-    if (comment.lognameOwnsThis === true) {
-      commentid - comment.commentid;
-      delete_button = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
-        type: "button",
-        className: "delete-comment-button",
-        onClick: function onClick(e) {
-          return handle_click(e, comment.commentid);
-        }
-      }, "Delete");
-    } else {
-      delete_button = null;
-    }
+  if (dataLoaded) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-      key: comment.commentid
+      className: "post"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "post card mx-auto m-2",
+      style: {
+        width: "".concat(30, "rem")
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "card-body row"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "col-5"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
-      href: comment.ownerShowUrl
-    }, comment.owner, " "), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text), "\xA0", delete_button);
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", {
-    onSubmit: handleSubmit,
-    className: "comment-form"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("input", {
-    type: "text",
-    value: value,
-    onChange: handleChange,
-    required: true
-  })))));
+      href: ownerShowUrl,
+      className: "row fw-bold text-body text-decoration-none"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "col-5"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
+      src: ownerImgUrl,
+      className: "img-thumbnail",
+      alt: owner
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "col-7 mt-3"
+    }, owner))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "col-4 offset-3 mt-3"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
+      href: "/posts/".concat(postid, "/"),
+      className: "text-secondary fw-bold text-decoration-none"
+    }, time))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
+      src: imgUrl,
+      alt: "post_image",
+      onDoubleClick: imageChangeLikes
+    }), likeCom(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+      className: "comment-text"
+    }, comments.map(function (comment) {
+      var delete_button;
+      if (comment.lognameOwnsThis === true) {
+        commentid - comment.commentid;
+        delete_button = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
+          type: "button",
+          className: "delete-comment-button",
+          onClick: function onClick(e) {
+            return handle_click(e, comment.commentid);
+          }
+        }, "Delete");
+      } else {
+        delete_button = null;
+      }
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+        key: comment.commentid
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
+        href: comment.ownerShowUrl
+      }, comment.owner, " "), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text), "\xA0", delete_button);
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", {
+      onSubmit: handleSubmit,
+      className: "comment-form"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("input", {
+      type: "text",
+      value: value,
+      onChange: handleChange,
+      required: true
+    })))));
+  } else {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, "Loading...");
+  }
 }
 Post.propTypes = {
   url: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().string.isRequired)

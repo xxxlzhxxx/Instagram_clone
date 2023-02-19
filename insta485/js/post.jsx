@@ -1,33 +1,29 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import moment from 'moment';
+import moment from "moment";
 import LikeButton from "./likeButton";
-
-
-
 
 // The parameter of this function is an object with a string called url inside it.
 // url is a prop for the Post component.
-export default function Post({url}) {
+export default function Post({ url }) {
   /* Display image and post owner of a single post */
-
   const [imgUrl, setImgUrl] = useState("");
   const [owner, setOwner] = useState("");
   const [time, setTime] = useState("");
   const [postid, setPostid] = useState("");
-  const [likes, setLikes] = useState([])
+  const [likes, setLikes] = useState([]);
   const [value, setValue] = useState("");
   const [comments, setComments] = useState([]);
   const [num, setNum] = useState(0);
-  const [ownerImgUrl, setOwnerImgUrl] = useState('');
+  const [ownerImgUrl, setOwnerImgUrl] = useState("");
   const [ownerShowUrl, setOwnershowurl] = useState("");
+  const [dataLoaded, setDataLoaded] = useState(false);
   var commentid;
-
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
     let ignoreStaleRequest = false;
-    
+
     // Call REST API to get the post's information
     fetch(url, { credentials: "same-origin" })
       .then((response) => {
@@ -55,10 +51,10 @@ export default function Post({url}) {
             })
           );
           setComments(newcmt);
+          setDataLoaded(true);
         }
       })
       .catch((error) => console.log(error));
-
 
     return () => {
       // This is a cleanup function that runs whenever the Post component
@@ -68,59 +64,51 @@ export default function Post({url}) {
     };
   }, [url, value, num]);
 
-
   const changelikes = () => {
     let method;
     let uurl;
     if (likes.lognameLikesThis) {
-      method = 'DELETE'
+      method = "DELETE";
       uurl = likes.url;
     } else {
-      method = 'POST'
+      method = "POST";
       uurl = `/api/v1/likes/?postid=${postid}`;
     }
-    fetch(
-      uurl,
-      {
-        credentials: "same-origin",
-        method,
-      },
-    )
-    .then((response) => {
-      if (!response.ok) throw Error(response.statusText);
-      setNum(num+1);
+    fetch(uurl, {
+      credentials: "same-origin",
+      method,
     })
-    .catch((error) => console.log(error));
-  }
-
-  const imageChangeLikes = () => {
-    let method
-    let uurl = `/api/v1/likes/?postid=${postid}`;
-    if (!likes.lognameLikesThis) {
-      method = 'POST'
-      fetch(
-        uurl,
-        {
-          credentials: "same-origin",
-          method,
-        },
-      )
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
-        setNum(num+1);
+        setNum(num + 1);
       })
       .catch((error) => console.log(error));
+  };
+
+  const imageChangeLikes = () => {
+    let method;
+    let uurl = `/api/v1/likes/?postid=${postid}`;
+    if (!likes.lognameLikesThis) {
+      method = "POST";
+      fetch(uurl, {
+        credentials: "same-origin",
+        method,
+      })
+        .then((response) => {
+          if (!response.ok) throw Error(response.statusText);
+          setNum(num + 1);
+        })
+        .catch((error) => console.log(error));
     }
-  }
+  };
 
-  let liketext
+  let liketext;
   if (likes.numLikes === 1) {
-    liketext = 'like'
+    liketext = "like";
   } else {
-    liketext = 'likes'
+    liketext = "likes";
   }
 
-  
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -145,73 +133,76 @@ export default function Post({url}) {
       credentials: "same-origin",
       method: "DELETE",
     })
-    .then((response) => {
-      setNum(num+1);
-      if (!response.ok) throw Error(response.statusText);
-    })
-    .catch((error) => console.log(error));
+      .then((response) => {
+        setNum(num + 1);
+        if (!response.ok) throw Error(response.statusText);
+      })
+      .catch((error) => console.log(error));
   };
 
   const likeCom = () => {
-       if (likes != []) {
-          return (
-           <p>
-           <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
-             &nbsp;
-             {likes.numLikes} {liketext}
-           </p >
-         )
-       }
-     }
+    if (likes != []) {
+      return (
+        <p>
+          <LikeButton
+            lognameLikesThis={likes.lognameLikesThis}
+            changeLikes={changelikes}
+          />
+          &nbsp;
+          {likes.numLikes} {liketext}
+        </p>
+      );
+    }
+  };
   // Render post image and post owner
-  return (
-    <div className="post">
-      <div className="post card mx-auto m-2" style={{ width: `${30}rem` }}>
-        <div className="card-body row">
-          <div className="col-5">
-            <a href={ownerShowUrl} className="row fw-bold text-body text-decoration-none">
-              <div className="col-5">
-                <img src={ownerImgUrl} className="img-thumbnail" alt={owner} />
-              </div>
-              <div className="col-7 mt-3">
-                {owner}
-              </div>
-            </a>
+  if (dataLoaded) {
+    return (
+      <div className="post">
+        <div className="post card mx-auto m-2" style={{ width: `${30}rem` }}>
+          <div className="card-body row">
+            <div className="col-5">
+              <a
+                href={ownerShowUrl}
+                className="row fw-bold text-body text-decoration-none"
+              >
+                <div className="col-5">
+                  <img
+                    src={ownerImgUrl}
+                    className="img-thumbnail"
+                    alt={owner}
+                  />
+                </div>
+                <div className="col-7 mt-3">{owner}</div>
+              </a>
+            </div>
+
+            <div className="col-4 offset-3 mt-3">
+              <a
+                href={`/posts/${postid}/`}
+                className="text-secondary fw-bold text-decoration-none"
+              >
+                {time}
+              </a>
+            </div>
           </div>
 
-          <div className="col-4 offset-3 mt-3">
-            <a href={`/posts/${postid}/`} className="text-secondary fw-bold text-decoration-none">
-              {time}
-            </a>
-          </div>
-        </div>
- 
-        <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
+          <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes} />
 
-        {likeCom()}
-
-  
-            
-        
-        
-        
-        
+          {likeCom()}
           <div className="comment-text">
-          
             {comments.map((comment) => {
               let delete_button;
               if (comment.lognameOwnsThis === true) {
                 commentid - comment.commentid;
-                delete_button = 
-                
+                delete_button = (
                   <button
-                  type="button"
-                  className= "delete-comment-button"
-                  onClick={(e) => handle_click(e, comment.commentid)}
+                    type="button"
+                    className="delete-comment-button"
+                    onClick={(e) => handle_click(e, comment.commentid)}
                   >
                     Delete
-                </button>;
-
+                  </button>
+                );
               } else {
                 delete_button = null;
               }
@@ -227,20 +218,21 @@ export default function Post({url}) {
             })}
 
             <form onSubmit={handleSubmit} className="comment-form">
-                  <input type="text" value={value} onChange={handleChange} required />
+              <input
+                type="text"
+                value={value}
+                onChange={handleChange}
+                required
+              />
             </form>
-
           </div>
-          
-
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <div>Loading...</div>;
+  }
 }
-
-
-
-
 
 Post.propTypes = {
   url: PropTypes.string.isRequired,
