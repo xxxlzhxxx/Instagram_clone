@@ -7,6 +7,7 @@ from insta485 import utils
 @insta485.app.route("/api/v1/", methods=["GET"])
 def get_services():
     """Return a list of services available."""
+    # Does not require user to be authenticated.
     context = {
         "comments": "/api/v1/comments/",
         "likes": "/api/v1/likes/",
@@ -60,8 +61,8 @@ def get_post_list():
     if len(results) < size:
         context["next"] = ""
     else:
-        context["next"] = f"""/api/v1/posts/?size=
-                        {size}&page={page+1}&postid_lte={postid_lte}"""
+        context["next"] = (f"/api/v1/posts/?size={size}"
+                           f"&page={page+1}&postid_lte={postid_lte}")
     return flask.jsonify(**context)
 
 
@@ -87,7 +88,7 @@ def get_post(postid_url_slug):
         return flask.jsonify({"message": "Post not found"}), 404
     post_info = post_info[0]
     cur = connection.execute(
-        " select * from likes  where postid = ? ", (postid,))
+        " select * from likes where postid = ? ", (postid,))
     likes = cur.fetchall()
     comments = []
     for cmt in cmts:
@@ -97,18 +98,18 @@ def get_post(postid_url_slug):
             "owner": cmt["owner"],
             "ownerShowUrl": f"/users/{cmt['owner']}/",
             "text": cmt["text"],
-            "url": f"/api/v1/comments/{cmt['commentid']}/"
+            "url": f"/api/v1/comments/{cmt['commentid']}/",
         }
         comments.append(temp)
 
-    llike = {"lognameLikesThis": False, "numLikes": len(likes), "url": None}
+    like_info = {"lognameLikesThis": False, "numLikes": len(likes),
+                 "url": None}
     for like in likes:
         if like["owner"] == logname:
-            llike["lognameLikesThis"] = True
-            llike["url"] = f"/api/v1/likes/{like['likeid']}/"
+            like_info["lognameLikesThis"] = True
+            like_info["url"] = f"/api/v1/likes/{like['likeid']}/"
         else:
-            # lk["url"] = "/api/v1/likes/?postid=%d" % postid
-            pass
+            like_info["url"] = f"/api/v1/likes/?postid={postid}"
 
     context["comments_url"] = f"/api/v1/comments/?postid={postid}"
     context["comments"] = comments
@@ -122,7 +123,7 @@ def get_post(postid_url_slug):
     context["postShowUrl"] = f"/posts/{post_info['postid']}/"
     context["ownerShowUrl"] = f"/users/{logname}/"
     context["imgUrl"] = f"/uploads/{post_info['filename']}"
-    context["likes"] = llike
+    context["likes"] = like_info
     context["url"] = f"/api/v1/posts/{post_info['postid']}/"
     context["ownerShowUrl"] = f"/users/{post_info['owner']}/"
     context["postid"] = postid
