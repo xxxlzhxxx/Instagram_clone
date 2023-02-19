@@ -1,6 +1,5 @@
 import React from "react";
 
-
 // liekebutton
 export default function likeButton(props) {
   const { lognameLikesThis, changeLikes } = props;

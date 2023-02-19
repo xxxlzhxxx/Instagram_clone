@@ -41,15 +41,13 @@ export default function Post({ url }) {
           setOwnershowurl(data.ownerShowUrl);
           setLikes(data.likes);
           setOwnerImgUrl(data.ownerImgUrl);
-          const newcmt = data.comments.forEach(
-            (comment) => {
-              newcmt.ownerShowUrl = comment.owenerShowUrl
-              newcmt.commentid = comment.commentid
-              newcmt.owner = comment.owner
-              newcmt.text = comment.text
-              newcmt.lognameOwnsThis = comment.lognameOwnsThis
-            }
-          );
+          const newcmt = data.comments.forEach((comment) => {
+            newcmt.ownerShowUrl = comment.owenerShowUrl;
+            newcmt.commentid = comment.commentid;
+            newcmt.owner = comment.owner;
+            newcmt.text = comment.text;
+            newcmt.lognameOwnsThis = comment.lognameOwnsThis;
+          });
           setComments(newcmt);
           setDataLoaded(true);
         }
@@ -153,7 +151,7 @@ export default function Post({ url }) {
         </p>
       );
     }
-    return null
+    return null;
   };
   // Render post image and post owner
   if (dataLoaded) {
@@ -229,7 +227,7 @@ export default function Post({ url }) {
         </div>
       </div>
     );
-  } 
+  }
   return <div>Loading...</div>;
 }
 

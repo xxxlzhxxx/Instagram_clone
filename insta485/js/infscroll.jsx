@@ -5,7 +5,7 @@ import Post from "./post";
 export default function InfScroll() {
   const [posts, setPosts] = useState([]);
   const [nextURL, setNextURL] = useState("/api/v1/posts/");
-  function fetchPostIDs() {
+  const fetchPostIDs = () => {
     fetch(nextURL, { credentials: "same-origin" })
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
@@ -16,7 +16,7 @@ export default function InfScroll() {
         setNextURL(data.next);
       })
       .catch((error) => console.log(error));
-  }
+  };
   useEffect(() => {
     fetchPostIDs();
   });
