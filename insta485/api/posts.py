@@ -61,7 +61,8 @@ def get_post_list():
     if len(results) < size:
         context["next"] = ""
     else:
-        context["next"] = f"/api/v1/posts/?size={size}&page={page+1}&postid_lte={postid_lte}"
+        context["next"] = (f"/api/v1/posts/?size={size}"
+                           f"&page={page+1}&postid_lte={postid_lte}")
     return flask.jsonify(**context)
 
 
