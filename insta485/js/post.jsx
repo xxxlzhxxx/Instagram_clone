@@ -18,7 +18,6 @@ export default function Post({ url }) {
   const [ownerImgUrl, setOwnerImgUrl] = useState("");
   const [ownerShowUrl, setOwnershowurl] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
-  let commentid;
   
 
   useEffect(() => {
@@ -128,7 +127,7 @@ export default function Post({ url }) {
       .catch((error) => console.log(error));
   };
 
-  const handle_click = (e, commentid) => {
+  const handleClick = (e, commentid) => {
     e.preventDefault();
     fetch(`/api/v1/comments/${commentid}/`, {
       credentials: "same-origin",
@@ -154,6 +153,7 @@ export default function Post({ url }) {
         </p>
       );
     }
+    return (<div></div>);
   };
   // Render post image and post owner
   if (dataLoaded) {
@@ -194,12 +194,12 @@ export default function Post({ url }) {
             {comments.map((comment) => {
               let deleteButton;
               if (comment.lognameOwnsThis === true) {
-                commentid - comment.commentid;
+                // commentid - comment.commentid;
                 deleteButton = (
                   <button
                     type="button"
                     className="delete-comment-button"
-                    onClick={(e) => handle_click(e, comment.commentid)}
+                    onClick={(e) => handleClick(e, comment.commentid)}
                   >
                     Delete
                   </button>

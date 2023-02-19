@@ -168,7 +168,6 @@ function Post(_ref) {
     _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState21, 2),
     dataLoaded = _useState22[0],
     setDataLoaded = _useState22[1];
-  var commentid;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     // Declare a boolean flag that we can use to cancel the API request.
     var ignoreStaleRequest = false;
@@ -279,7 +278,7 @@ function Post(_ref) {
       return console.log(error);
     });
   };
-  var handle_click = function handle_click(e, commentid) {
+  var handleClick = function handleClick(e, commentid) {
     e.preventDefault();
     fetch("/api/v1/comments/".concat(commentid, "/"), {
       credentials: "same-origin",
@@ -298,6 +297,7 @@ function Post(_ref) {
         changeLikes: changelikes
       }), "\xA0", likes.numLikes, " ", liketext);
     }
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null);
   };
   // Render post image and post owner
   if (dataLoaded) {
@@ -337,12 +337,12 @@ function Post(_ref) {
     }, comments.map(function (comment) {
       var deleteButton;
       if (comment.lognameOwnsThis === true) {
-        commentid - comment.commentid;
+        // commentid - comment.commentid;
         deleteButton = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
           type: "button",
           className: "delete-comment-button",
           onClick: function onClick(e) {
-            return handle_click(e, comment.commentid);
+            return handleClick(e, comment.commentid);
           }
         }, "Delete");
       } else {
