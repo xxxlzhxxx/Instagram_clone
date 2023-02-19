@@ -153,7 +153,7 @@ function Post(_ref) {
     _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState15, 2),
     num = _useState16[0],
     setNum = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
     _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState17, 2),
     ownerImgUrl = _useState18[0],
     setOwnerImgUrl = _useState18[1];
@@ -218,10 +218,10 @@ function Post(_ref) {
     var method;
     var uurl;
     if (likes.lognameLikesThis) {
-      method = 'DELETE';
+      method = "DELETE";
       uurl = likes.url;
     } else {
-      method = 'POST';
+      method = "POST";
       uurl = "/api/v1/likes/?postid=".concat(postid);
     }
     fetch(uurl, {
@@ -238,7 +238,7 @@ function Post(_ref) {
     var method;
     var uurl = "/api/v1/likes/?postid=".concat(postid);
     if (!likes.lognameLikesThis) {
-      method = 'POST';
+      method = "POST";
       fetch(uurl, {
         credentials: "same-origin",
         method: method
@@ -252,9 +252,9 @@ function Post(_ref) {
   };
   var liketext;
   if (likes.numLikes === 1) {
-    liketext = 'like';
+    liketext = "like";
   } else {
-    liketext = 'likes';
+    liketext = "likes";
   }
   var handleChange = function handleChange(event) {
     setValue(event.target.value);
