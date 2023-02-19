@@ -4,20 +4,15 @@ Insta485 index (main) view.
 URLs include:
 /
 """
-import hashlib
 import os
-import pathlib
-import uuid
-
 import arrow
 import flask
 from flask import (abort, redirect, request, send_from_directory, session,
                    url_for)
 
 import insta485
-from insta485.utils import *
-
-
+from insta485.utils import check_password, hash_password, save_current_file
+from insta485.utils import is_user_exists, get_file_path
 
 
 def is_following(username1, username2):
