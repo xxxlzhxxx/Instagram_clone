@@ -8,7 +8,7 @@ import LikeButton from "./likeButton";
 export default function Post({ url }) {
   /* Display image and post owner of a single post */
   const [imgUrl, setImgUrl] = useState("");
-  const [owner, setOwner] = useState("");
+  const [ownerGlobal, setOwnerGlobal] = useState("");
   const [time, setTime] = useState("");
   const [postid, setPostid] = useState("");
   const [likes, setLikes] = useState([]);
@@ -16,9 +16,8 @@ export default function Post({ url }) {
   const [comments, setComments] = useState([]);
   const [num, setNum] = useState(0);
   const [ownerImgUrl, setOwnerImgUrl] = useState("");
-  const [ownerShowUrl, setOwnershowurl] = useState("");
+  const [ownerShowUrlGlobal, setOwnershowurlGlobal] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
-  
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -35,10 +34,10 @@ export default function Post({ url }) {
         // the request. Otherwise, update the state to trigger a new render.
         if (!ignoreStaleRequest) {
           setImgUrl(data.imgUrl);
-          setOwner(data.owner);
+          setOwnerGlobal(data.owner);
           setTime(moment.utc(data.created).local().fromNow());
           setPostid(data.postid);
-          setOwnershowurl(data.ownerShowUrl);
+          setOwnershowurlGlobal(data.ownerShowUrl);
           setLikes(data.likes);
           setOwnerImgUrl(data.ownerImgUrl);
           const newcmt = data.comments.map(
@@ -153,7 +152,7 @@ export default function Post({ url }) {
         </p>
       );
     }
-    return (<div/>);
+    return <div />;
   };
   // Render post image and post owner
   if (dataLoaded) {
@@ -163,17 +162,17 @@ export default function Post({ url }) {
           <div className="card-body row">
             <div className="col-5">
               <a
-                href={ownerShowUrl}
+                href={ownerShowUrlGlobal}
                 className="row fw-bold text-body text-decoration-none"
               >
                 <div className="col-5">
                   <img
                     src={ownerImgUrl}
                     className="img-thumbnail"
-                    alt={owner}
+                    alt={ownerGlobal}
                   />
                 </div>
-                <div className="col-7 mt-3">{owner}</div>
+                <div className="col-7 mt-3">{ownerGlobal}</div>
               </a>
             </div>
 
@@ -230,9 +229,8 @@ export default function Post({ url }) {
         </div>
       </div>
     );
-  } 
-    return <div>Loading...</div>;
-  
+  }
+  return <div>Loading...</div>;
 }
 
 Post.propTypes = {

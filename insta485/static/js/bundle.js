@@ -130,8 +130,8 @@ function Post(_ref) {
     setImgUrl = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
     _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState3, 2),
-    owner = _useState4[0],
-    setOwner = _useState4[1];
+    ownerGlobal = _useState4[0],
+    setOwnerGlobal = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
     _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState5, 2),
     time = _useState6[0],
@@ -162,8 +162,8 @@ function Post(_ref) {
     setOwnerImgUrl = _useState18[1];
   var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(""),
     _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState19, 2),
-    ownerShowUrl = _useState20[0],
-    setOwnershowurl = _useState20[1];
+    ownerShowUrlGlobal = _useState20[0],
+    setOwnershowurlGlobal = _useState20[1];
   var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState21, 2),
     dataLoaded = _useState22[0],
@@ -183,10 +183,10 @@ function Post(_ref) {
       // the request. Otherwise, update the state to trigger a new render.
       if (!ignoreStaleRequest) {
         setImgUrl(data.imgUrl);
-        setOwner(data.owner);
+        setOwnerGlobal(data.owner);
         setTime(moment__WEBPACK_IMPORTED_MODULE_2___default().utc(data.created).local().fromNow());
         setPostid(data.postid);
-        setOwnershowurl(data.ownerShowUrl);
+        setOwnershowurlGlobal(data.ownerShowUrl);
         setLikes(data.likes);
         setOwnerImgUrl(data.ownerImgUrl);
         var newcmt = data.comments.map(function (_ref2) {
@@ -313,17 +313,17 @@ function Post(_ref) {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "col-5"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
-      href: ownerShowUrl,
+      href: ownerShowUrlGlobal,
       className: "row fw-bold text-body text-decoration-none"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "col-5"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
       src: ownerImgUrl,
       className: "img-thumbnail",
-      alt: owner
+      alt: ownerGlobal
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "col-7 mt-3"
-    }, owner))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    }, ownerGlobal))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "col-4 offset-3 mt-3"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
       href: "/posts/".concat(postid, "/"),
