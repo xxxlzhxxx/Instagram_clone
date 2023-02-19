@@ -50,9 +50,9 @@ def add_like():
 @insta485.app.route("/api/v1/likes/<likeid>/", methods=["DELETE"])
 def delete_like(likeid):
     """Delete the like with the specific likeid."""
-    message, logname = utils.authenicate()
+    mess, logname = utils.authenicate()
     if not logname:
-        return flask.jsonify(message), 403
+        return flask.jsonify(mess), 403
 
     connection = insta485.model.get_db()
     cursor = connection.execute(
