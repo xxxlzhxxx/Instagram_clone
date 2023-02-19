@@ -1,11 +1,9 @@
+"""Untiles."""
 import hashlib
-import os
 import pathlib
 import uuid
-
-import arrow
 import flask
-from flask import abort, redirect, request, send_from_directory, session, url_for
+from flask import request
 
 import insta485
 
@@ -65,7 +63,7 @@ def check_password(password, password_db_string):
 
 
 def authenicate():
-    """Check if the user is logged in or not"""
+    """Check if the user is logged in or not."""
     auth = request.authorization
     if not auth:
         if "username" not in flask.session:
@@ -73,28 +71,25 @@ def authenicate():
 
         if not is_user_exists(flask.session["username"]):
             return {"message": "Forbidden: user name does not exist"}, None
-        return {"message": f"Auth: {flask.session['username']}"}, flask.session[
-            "username"
-        ]
-    else:
-        username, password = auth.username, auth.password
-        connection = insta485.model.get_db()
-        ret = connection.execute(
-            "SELECT password" + " FROM users WHERE username == ?", (username,)
-        )
-        gt_password_db_string = ret.fetchone()
-        if gt_password_db_string is not None:
-            gt_password_db_string = gt_password_db_string["password"]
-            if check_password(password, gt_password_db_string):
-                # if password is correct
-                return {
-                    "message": f"Auth: {username}",
-                }, username
-            else:
-                return {
-                    "message": "Forbidden: password is incorrect",
-                }, None
-        else:
+        return {"message": f"Auth: {flask.session['username']}"
+                }, flask.session["username"]
+
+    username, password = auth.username, auth.password
+    connection = insta485.model.get_db()
+    ret = connection.execute(
+        "SELECT password" + " FROM users WHERE username == ?", (username,)
+    )
+    gt_password_db_string = ret.fetchone()
+    if gt_password_db_string is not None:
+        gt_password_db_string = gt_password_db_string["password"]
+        if check_password(password, gt_password_db_string):
+            # if password is correct
             return {
-                "message": "Forbidden: user name does not exist",
-            }, None
+                "message": f"Auth: {username}",
+            }, username
+        return {
+            "message": "Forbidden: password is incorrect",
+        }, None
+    return {
+        "message": "Forbidden: user name does not exist",
+    }, None
