@@ -284,7 +284,14 @@ function Post(_ref) {
       return console.log(error);
     });
   };
-
+  var likeCom = function likeCom() {
+    if (likes != []) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_likeButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        lognameLikesThis: likes.lognameLikesThis,
+        changeLikes: changelikes
+      }), "\xA0", likes.numLikes, " ", liketext);
+    }
+  };
   // Render post image and post owner
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "post"
@@ -317,18 +324,15 @@ function Post(_ref) {
     src: imgUrl,
     alt: "post_image",
     onDoubleClick: imageChangeLikes
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_likeButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    lognameLikesThis: likes.lognameLikesThis,
-    changeLikes: changelikes
-  }), "\xA0", likes.numLikes, " ", liketext), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
-    className: "all_comments"
+  }), likeCom(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "comment-text"
   }, comments.map(function (comment) {
     var delete_button;
     if (comment.lognameOwnsThis === true) {
       commentid - comment.commentid;
       delete_button = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
         type: "button",
-        className: "delete-comment-button btn btn-warning",
+        className: "delete-comment-button",
         onClick: function onClick(e) {
           return handle_click(e, comment.commentid);
         }
@@ -342,8 +346,10 @@ function Post(_ref) {
       href: comment.ownerShowUrl
     }, comment.owner, " "), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, comment.text), "\xA0", delete_button);
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", {
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
+    className: "comment-form"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("input", {
+    type: "text",
     value: value,
     onChange: handleChange,
     required: true
