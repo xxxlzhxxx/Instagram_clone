@@ -153,7 +153,7 @@ export default function Post({ url }) {
         </p>
       );
     }
-    return (<div></div>);
+    return (<div/>);
   };
   // Render post image and post owner
   if (dataLoaded) {
