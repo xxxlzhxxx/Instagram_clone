@@ -18,7 +18,7 @@ export default function Post({ url }) {
   const [ownerImgUrl, setOwnerImgUrl] = useState("");
   const [ownerShowUrl, setOwnershowurl] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
-  var commentid;
+  let commentid;
 
   useEffect(() => {
     // Declare a boolean flag that we can use to cancel the API request.
@@ -41,14 +41,14 @@ export default function Post({ url }) {
           setOwnershowurl(data.ownerShowUrl);
           setLikes(data.likes);
           setOwnerImgUrl(data.ownerImgUrl);
-          const newcmt = data.comments.map(
-            ({ ownerShowUrl, commentid, owner, text, lognameOwnsThis }) => ({
-              ownerShowUrl,
-              commentid,
-              owner,
-              text,
-              lognameOwnsThis,
-            })
+          const newcmt = data.comments.forEach(
+            (comment) => {
+              newcmt.ownerShowUrl = comment.owenerShowUrl
+              newcmt.commentid = comment.commentid
+              newcmt.owner = comment.owner
+              newcmt.text = comment.text
+              newcmt.lognameOwnsThis = comment.lognameOwnsThis
+            }
           );
           setComments(newcmt);
           setDataLoaded(true);
@@ -87,7 +87,7 @@ export default function Post({ url }) {
 
   const imageChangeLikes = () => {
     let method;
-    let uurl = `/api/v1/likes/?postid=${postid}`;
+    const uurl = `/api/v1/likes/?postid=${postid}`;
     if (!likes.lognameLikesThis) {
       method = "POST";
       fetch(uurl, {
@@ -121,13 +121,13 @@ export default function Post({ url }) {
       method: "POST",
       body: JSON.stringify({ text: value }),
     })
-      .then((response) => {
+      .then(() => {
         setValue("");
       })
       .catch((error) => console.log(error));
   };
 
-  const handle_click = (e, commentid) => {
+  const handleClick = (e) => {
     e.preventDefault();
     fetch(`/api/v1/comments/${commentid}/`, {
       credentials: "same-origin",
@@ -141,7 +141,7 @@ export default function Post({ url }) {
   };
 
   const likeCom = () => {
-    if (likes != []) {
+    if (likes !== []) {
       return (
         <p>
           <LikeButton
@@ -153,6 +153,7 @@ export default function Post({ url }) {
         </p>
       );
     }
+    return null
   };
   // Render post image and post owner
   if (dataLoaded) {
@@ -191,20 +192,19 @@ export default function Post({ url }) {
           {likeCom()}
           <div className="comment-text">
             {comments.map((comment) => {
-              let delete_button;
+              let deleteButton;
               if (comment.lognameOwnsThis === true) {
-                commentid - comment.commentid;
-                delete_button = (
+                deleteButton = (
                   <button
                     type="button"
                     className="delete-comment-button"
-                    onClick={(e) => handle_click(e, comment.commentid)}
+                    onClick={(e) => handleClick(e, comment.commentid)}
                   >
                     Delete
                   </button>
                 );
               } else {
-                delete_button = null;
+                deleteButton = null;
               }
               return (
                 <div key={comment.commentid}>
@@ -212,7 +212,7 @@ export default function Post({ url }) {
                   &nbsp;
                   <span>{comment.text}</span>
                   &nbsp;
-                  {delete_button}
+                  {deleteButton}
                 </div>
               );
             })}
@@ -229,9 +229,8 @@ export default function Post({ url }) {
         </div>
       </div>
     );
-  } else {
-    return <div>Loading...</div>;
-  }
+  } 
+  return <div>Loading...</div>;
 }
 
 Post.propTypes = {

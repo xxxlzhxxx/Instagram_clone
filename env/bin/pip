@@ -1,4 +1,4 @@
-#!/home/ziheng/eecs_485/proj3/env/bin/python3
+#!/home/xtt/eecs_485/Instagram_clone/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

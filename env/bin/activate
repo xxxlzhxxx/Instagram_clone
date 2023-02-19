@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/ziheng/eecs_485/proj3/env"
+VIRTUAL_ENV="/home/xtt/eecs_485/Instagram_clone/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
