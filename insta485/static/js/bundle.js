@@ -272,7 +272,7 @@ function Post(_ref) {
       body: JSON.stringify({
         text: value
       })
-    }).then(function (response) {
+    }).then(function () {
       setValue("");
     })["catch"](function (error) {
       return console.log(error);

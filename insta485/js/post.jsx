@@ -121,7 +121,7 @@ export default function Post({ url }) {
       method: "POST",
       body: JSON.stringify({ text: value }),
     })
-      .then((response) => {
+      .then(() => {
         setValue("");
       })
       .catch((error) => console.log(error));
