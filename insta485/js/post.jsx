@@ -155,56 +155,65 @@ export default function Post({url}) {
   // Render post image and post owner
   return (
     <div className="post">
-      <a href={ownerShowUrl}>
-        <img src={ownerImgUrl} alt="owner img" width="50pm" height="50pm"/>
-        {owner}
-      </a>
-      &nbsp;
-      &nbsp;
-      <a href={`/posts/${postid}`}>
-        {time}
-      </a>
-      <br></br>
-      <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
+      <div className="post card mx-auto m-2" style={{ width: `${30}rem` }}>
+        <div className="card-body row">
+          <div className="col-5">
+            <a href={ownerShowUrl} className="row fw-bold text-body text-decoration-none">
+              <div className="col-5">
+                <img src={ownerImgUrl} className="img-thumbnail" alt={owner} />
+              </div>
+              <div className="col-7 mt-3">
+                {owner}
+              </div>
+            </a>
+          </div>
+
+          <div className="col-4 offset-3 mt-3">
+            <a href={`/posts/${postid}/`} className="text-secondary fw-bold text-decoration-none">
+              {time}
+            </a>
+          </div>
+        </div>
+ 
+        <img src={imgUrl} alt="post_image" onDoubleClick={imageChangeLikes}/>
       
-      <p>
-        <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
-        &nbsp;
-        {likes.numLikes} {liketext}
-      </p>
+        <p>
+          <LikeButton lognameLikesThis = {likes.lognameLikesThis} changeLikes = {changelikes}/>
+          &nbsp;
+          {likes.numLikes} {liketext}
+        </p>
 
 
-
-      
-      <div>
-        {comments.map((comment) => {
-          let delete_button;
-          if (comment.lognameOwnsThis === true) {
-            commentid - comment.commentid;
-            delete_button = 
-              <button
-              type="button"
-              className="delete-comment-button btn btn-warning"
-              onClick={(e) => handle_click(e, comment.commentid)}
-              >
-                Delete
-            </button>;
-          } else {
-            delete_button = null;
-          }
-          return (
-            <div key={comment.commentid}>
-              <a href={comment.ownerShowUrl}>{comment.owner} </a>
-              &nbsp;
-              <span>{comment.text}</span>
-              &nbsp;
-              {delete_button}
-            </div>
-          );
-        })}
-        <form onSubmit={handleSubmit}>
-          <input value={value} onChange={handleChange} required />
-        </form>
+        <div className="all_comments">
+          {comments.map((comment) => {
+            let delete_button;
+            if (comment.lognameOwnsThis === true) {
+              commentid - comment.commentid;
+              delete_button = 
+                <button
+                type="button"
+                className="delete-comment-button btn btn-warning"
+                onClick={(e) => handle_click(e, comment.commentid)}
+                >
+                  Delete
+              </button>;
+            } else {
+              delete_button = null;
+            }
+            return (
+              <div key={comment.commentid}>
+                <a href={comment.ownerShowUrl}>{comment.owner} </a>
+                &nbsp;
+                <span>{comment.text}</span>
+                &nbsp;
+                {delete_button}
+              </div>
+            );
+          })}
+          <form onSubmit={handleSubmit}>
+            <input value={value} onChange={handleChange} required />
+          </form>
+        </div>
       </div>
     </div>
   );

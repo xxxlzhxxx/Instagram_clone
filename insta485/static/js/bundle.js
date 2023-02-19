@@ -288,23 +288,41 @@ function Post(_ref) {
   // Render post image and post owner
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "post"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "post card mx-auto m-2",
+    style: {
+      width: "".concat(30, "rem")
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "card-body row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "col-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
-    href: ownerShowUrl
+    href: ownerShowUrl,
+    className: "row fw-bold text-body text-decoration-none"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "col-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
     src: ownerImgUrl,
-    alt: "owner img",
-    width: "50pm",
-    height: "50pm"
-  }), owner), "\xA0 \xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
-    href: "/posts/".concat(postid)
-  }, time), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
+    className: "img-thumbnail",
+    alt: owner
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "col-7 mt-3"
+  }, owner))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "col-4 offset-3 mt-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("a", {
+    href: "/posts/".concat(postid, "/"),
+    className: "text-secondary fw-bold text-decoration-none"
+  }, time))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("img", {
     src: imgUrl,
     alt: "post_image",
     onDoubleClick: imageChangeLikes
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_likeButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
     lognameLikesThis: likes.lognameLikesThis,
     changeLikes: changelikes
-  }), "\xA0", likes.numLikes, " ", liketext), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", null, comments.map(function (comment) {
+  }), "\xA0", likes.numLikes, " ", liketext), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+    className: "all_comments"
+  }, comments.map(function (comment) {
     var delete_button;
     if (comment.lognameOwnsThis === true) {
       commentid - comment.commentid;
@@ -329,7 +347,7 @@ function Post(_ref) {
     value: value,
     onChange: handleChange,
     required: true
-  }))));
+  })))));
 }
 Post.propTypes = {
   url: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().string.isRequired)
